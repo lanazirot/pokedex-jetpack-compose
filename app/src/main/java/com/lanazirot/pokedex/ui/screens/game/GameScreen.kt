@@ -43,7 +43,7 @@ fun GameScreen() {
         Row {
             //Image should be here, centered
             val painter =
-                rememberAsyncImagePainter(model = gameState.pokemonGuessable.pokemon.getPathImage())
+                rememberAsyncImagePainter(model = gameState.pokemonGuessable.pokemonAnswers.filter { it.isCorrect }[0].pokemon.getPathImage())
             Image(
                 painter = painter,
                 contentDescription = "Imagen con filtro negro",

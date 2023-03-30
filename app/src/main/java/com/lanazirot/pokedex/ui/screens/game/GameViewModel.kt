@@ -2,10 +2,14 @@ package com.lanazirot.pokedex.ui.screens.game
 
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
-import com.lanazirot.pokedex.domain.interfaces.IPokemonGuessService
+import com.lanazirot.pokedex.domain.models.PokemonAnswer
+import com.lanazirot.pokedex.domain.models.PokemonGuessable
+import com.lanazirot.pokedex.ui.screens.user.UserViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class GameViewModel @Inject constructor() : ViewModel() {
     private var _gameState: MutableStateFlow<GameState> = MutableStateFlow(GameState())
     val gameState = _gameState
@@ -18,7 +22,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
             score = 0,
             lives = 3,
             remainingTime = 5,
-            pokemonGuessable =
+            pokemonGuessable = fetchNextPokemonGuessable()
         )
         _timer = object : CountDownTimer(5000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -36,16 +40,17 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     suspend fun guessPokemon(id: Int) {
-        val isCorrect = false
+        val isCorrect =
+            _gameState.value.pokemonGuessable.pokemonAnswers.first { it.isCorrect }.pokemon.id == id
         if (isCorrect) {
             _gameState.value = _gameState.value.copy(
                 score = _gameState.value.score + 1,
-                pokemonGuessable = IPokemonGuessService.getGuessablePokemon()
+                pokemonGuessable = fetchNextPokemonGuessable()
             )
         } else {
             _gameState.value = _gameState.value.copy(
                 lives = _gameState.value.lives - 1,
-                pokemonGuessable = IPokemonGuessService.getGuessablePokemon()
+                pokemonGuessable = fetchNextPokemonGuessable()
             )
         }
     }
@@ -56,5 +61,24 @@ class GameViewModel @Inject constructor() : ViewModel() {
         //TODO: Navigate to end game screen and update user's stats
     }
 
+    /**
+     * Devuelve la lista de pokemon no encontrados por el usuario
+     * @return lista de pokemon no encontrados
+     */
+    suspend fun fetchNextPokemonGuessable(): PokemonGuessable {
+    /*    var notFoundPokemonList = userViewModel.getNotFoundPokemon()
+        val pokemon = notFoundPokemonList.random()
+        notFoundPokemonList.remove(pokemon)*/
+
+        val pokemonAnswers = mutableListOf<PokemonAnswer>()
+     /*   pokemonAnswers.add(PokemonAnswer(pokemon, true))
+        //Remove the pokemon from the list
+        for (i in 1..3) {
+            val randomPokemon = notFoundPokemonList.random()
+            pokemonAnswers.add(PokemonAnswer(randomPokemon, false))
+        }
+        pokemonAnswers.shuffle()*/
+        return PokemonGuessable(pokemonAnswers)
+    }
 
 }

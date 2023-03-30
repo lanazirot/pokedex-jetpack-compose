@@ -2,7 +2,6 @@ package com.lanazirot.pokedex.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.BottomAppBar
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -22,31 +21,6 @@ import com.lanazirot.pokedex.ui.theme.PokedexTheme
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController()
-    val gp = AppProvider(navigation = navController)
-    val gup = UserProvider(currentUser = UserViewModel())
 
-    PokedexTheme {
-        CompositionLocalProvider(
-            GlobalProvider provides gp
-        ) {
-            CompositionLocalProvider(
-                GlobalUserProvider provides gup
-            ) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Scaffold(
-                        bottomBar = {
-                            BottomNavBar()
-                        },
-                        content = {
-                            AppNavGraph(globalProvider = gp)
-                        }
-                    )
-                }
-            }
-        }
-    }
+
 }
