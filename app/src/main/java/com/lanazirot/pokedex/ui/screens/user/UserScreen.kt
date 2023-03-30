@@ -17,7 +17,7 @@ fun UserScreen() {
 
         LazyColumn {
             items(currentUser.getPokemonFound()) {
-                    p -> PokemonSimpleCard(pokemon = p, isVisible = true)
+                p -> PokemonSimpleCard(pokemon = p, isVisible = true)
             }
         }
 
