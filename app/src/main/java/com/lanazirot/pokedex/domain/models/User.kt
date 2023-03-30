@@ -1,7 +1,7 @@
 package com.lanazirot.pokedex.domain.models
 
 data class User (
-    var foundPokemonList :List<Pokemon> = emptyList(),
-    var scoreLog :List<Score> = emptyList(),
+    var foundPokemonList :MutableList<Pokemon> = mutableListOf(),
+    var scoreLog :MutableList<Score> = mutableListOf(),
     var pokedexCompleted :Boolean = false,
 )
