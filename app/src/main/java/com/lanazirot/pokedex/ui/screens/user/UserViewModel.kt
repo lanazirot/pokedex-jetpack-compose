@@ -1,14 +1,19 @@
 package com.lanazirot.pokedex.ui.screens.user
 
+
 import androidx.lifecycle.ViewModel
-import com.lanazirot.pokedex.domain.models.Pokemon
-import com.lanazirot.pokedex.domain.models.Score
-import com.lanazirot.pokedex.domain.models.User
+import com.lanazirot.pokedex.domain.interfaces.IPokemonLocalRepository
+import com.lanazirot.pokedex.domain.models.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class UserViewModel :ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val pokemonLocalRepository: IPokemonLocalRepository
+) :ViewModel() {
     private val totalPokemon = 151
 
     private var _userState = MutableStateFlow(UserState())
@@ -112,4 +117,20 @@ class UserViewModel :ViewModel() {
         val countPokemonFound = getCountPokemonFound()
         return if (countPokemonFound > 0) (countPokemonFound * 100) / totalPokemon else 0
     }
+
+    suspend fun getNotFoundPokemon(): MutableList<Pokemon> {
+        val foundPokemonList = getPokemonFound()
+        val notFoundPokemonList = mutableListOf<Pokemon>()
+        pokemonLocalRepository.getPokemonList().forEach {
+            if(!foundPokemonList.contains(it)) {
+                notFoundPokemonList.add(it)
+            }
+        }
+        return notFoundPokemonList
+    }
+
+    suspend fun getAllPokemons(): List<Pokemon> {
+        return pokemonLocalRepository.getPokemonList()
+    }
 }
+
