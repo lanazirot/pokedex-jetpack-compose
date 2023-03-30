@@ -2,11 +2,8 @@ package com.lanazirot.pokedex
 
 import com.lanazirot.pokedex.domain.implementations.PokemonLocalRepository
 import com.lanazirot.pokedex.domain.implementations.PokemonRepository
-import com.lanazirot.pokedex.domain.implementations.UserRepository
-import com.lanazirot.pokedex.domain.interfaces.IPokemonLocalRepository
-import com.lanazirot.pokedex.domain.interfaces.IPokemonRepository
-import com.lanazirot.pokedex.domain.interfaces.IPokemonService
-import com.lanazirot.pokedex.domain.interfaces.IUserRepository
+import com.lanazirot.pokedex.domain.implementations.UserManager
+import com.lanazirot.pokedex.domain.interfaces.*
 import com.lanazirot.pokedex.domain.services.PokemonService
 import dagger.Module
 import dagger.Provides
@@ -20,10 +17,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(): IUserRepository = UserRepository()
-
-    @Provides
-    @Singleton
     fun providePokemonRepository(): IPokemonRepository = PokemonRepository()
 
 
@@ -34,5 +27,9 @@ object AppModule {
     @Provides
     @Singleton
     fun providePokemonLocalRepository(): IPokemonLocalRepository = PokemonLocalRepository(pokemonRepository = providePokemonRepository())
+
+    @Provides
+    @Singleton
+    fun provideUserManager(): IUserManager = UserManager()
 
 }

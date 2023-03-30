@@ -61,10 +61,6 @@ class GameViewModel @Inject constructor() : ViewModel() {
         //TODO: Navigate to end game screen and update user's stats
     }
 
-    /**
-     * Devuelve la lista de pokemon no encontrados por el usuario
-     * @return lista de pokemon no encontrados
-     */
     suspend fun fetchNextPokemonGuessable(): PokemonGuessable {
     /*    var notFoundPokemonList = userViewModel.getNotFoundPokemon()
         val pokemon = notFoundPokemonList.random()
