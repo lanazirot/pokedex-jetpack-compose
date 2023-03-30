@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+/*
 @Composable
 fun Greeting() {
     val painter = rememberAsyncImagePainter(model = "file:///android_asset/images/019.png")
@@ -40,3 +40,4 @@ fun Greeting() {
     )
 }
 
+*/
