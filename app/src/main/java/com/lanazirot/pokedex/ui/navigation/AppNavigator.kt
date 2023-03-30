@@ -8,7 +8,6 @@ import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.UserNavGraph
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.AppProvider
 
-
 @Composable
 fun AppNavGraph(globalProvider: AppProvider) {
     val navController = globalProvider.navigation
