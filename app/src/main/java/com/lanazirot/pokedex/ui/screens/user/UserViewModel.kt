@@ -2,7 +2,9 @@ package com.lanazirot.pokedex.ui.screens.user
 
 
 import androidx.lifecycle.ViewModel
+import com.lanazirot.pokedex.domain.implementations.UserManager
 import com.lanazirot.pokedex.domain.interfaces.IPokemonLocalRepository
+import com.lanazirot.pokedex.domain.interfaces.IUserManager
 import com.lanazirot.pokedex.domain.models.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val pokemonLocalRepository: IPokemonLocalRepository
+    private val pokemonLocalRepository: IPokemonLocalRepository,
+    private val userManager: IUserManager
 ) :ViewModel() {
     private val totalPokemon = 151
 
