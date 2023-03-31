@@ -29,14 +29,13 @@ fun UserScreen() {
         ) {
             Text(text = "Este listado de pokemones no vba hehjehejesjfrhck")
         LazyColumn(
-            modifier = Modifier.weight(weight = 1f),
-            content =  {
+            modifier = Modifier.weight(weight = 1f))
+            {
                 items(currentUser.getPokemonFound()) { p ->
                     PokemonSimpleCard(pokemon = p, isVisible = true)
                 }
             }
-        )
-//
+
             LazyColumn(
                 modifier = Modifier.weight(weight = 1f),
             content =  {

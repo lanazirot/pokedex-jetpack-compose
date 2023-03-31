@@ -5,25 +5,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.navigation.compose.rememberNavController
-import coil.compose.rememberAsyncImagePainter
 import com.lanazirot.pokedex.ui.navigation.AppNavGraph
+import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.AppProvider
 import com.lanazirot.pokedex.ui.providers.GlobalProvider
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
 import com.lanazirot.pokedex.ui.providers.UserProvider
-import com.lanazirot.pokedex.ui.screens.LoginScreen
-import com.lanazirot.pokedex.ui.screens.MainScreen
 import com.lanazirot.pokedex.ui.screens.bottomappbar.BottomNavBar
 import com.lanazirot.pokedex.ui.screens.user.UserViewModel
 import com.lanazirot.pokedex.ui.theme.PokedexTheme
@@ -37,7 +31,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
+            val bottomBarVisibility = remember { mutableStateOf(true) }
             val navController = rememberNavController()
+
+            val routesWithoutNavBarBottom = listOf (
+                AppRoutes.Login.Login,
+                AppRoutes.Play.Game
+            )
+
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                bottomBarVisibility.value = destination.route !in routesWithoutNavBarBottom
+            }
+
             val gp = AppProvider(navigation = navController)
             val gup = UserProvider(currentUser = userViewModel)
 
@@ -54,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             Scaffold(
                                 bottomBar = {
-                                    BottomNavBar()
+                                    if (bottomBarVisibility.value) BottomNavBar()
                                 },
                                 content = {
                                     AppNavGraph(globalProvider = gp)

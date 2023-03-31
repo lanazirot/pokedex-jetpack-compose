@@ -65,18 +65,22 @@ class GameViewModel @Inject constructor(
     }
 
     fun fetchNextPokemonGuessable(): PokemonGuessable {
-        val pokemonAnswers = mutableListOf<PokemonAnswer>()
-        val correctPokemon = userManager.getRandomUnseenPokemon()
-        pokemonAnswers.add(PokemonAnswer(correctPokemon, true))
-        //Agregar otras 3 opciones incorrectas
-        for (i in 0 until 3) {
-            val incorrectPokemon = userManager.getRandomUnseenPokemon()
-            pokemonAnswers.add(PokemonAnswer(incorrectPokemon, false))
-        }
-
-
-        pokemonAnswers.shuffle()
-        return PokemonGuessable(pokemonAnswers)
+//        val pokemonAnswers = mutableListOf<PokemonAnswer>()
+//        val correctPokemon = userManager.getRandomUnseenPokemon()
+//        pokemonAnswers.add(PokemonAnswer(correctPokemon, true))
+//        //Agregar otras 3 opciones incorrectas
+//        for (i in 0 until 3) {
+//            val incorrectPokemon = userManager.getRandomUnseenPokemon()
+//            pokemonAnswers.add(PokemonAnswer(incorrectPokemon, false))
+//        }
+//
+//
+//        pokemonAnswers.shuffle()
+//        return PokemonGuessable(pokemonAnswers)
+        return PokemonGuessable(
+            listOf(
+            )
+        )
     }
 
 }

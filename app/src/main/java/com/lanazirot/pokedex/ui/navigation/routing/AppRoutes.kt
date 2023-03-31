@@ -4,7 +4,6 @@ class AppRoutes {
 
     object Pokedex {
         const val PokemonList = "pokemon_list"
-        const val PokemonDetail = "pokemon_detail"
     }
 
     object Play {
@@ -13,7 +12,6 @@ class AppRoutes {
 
     object User {
         const val Profile = "profile"
-        const val Settings = "settings"
     }
 
     object Login {
