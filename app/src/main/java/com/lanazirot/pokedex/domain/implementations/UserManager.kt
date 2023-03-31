@@ -12,10 +12,10 @@ class UserManager @Inject constructor(
     private val totalPokemon = 151
     private var currentUser: User? = null
 
+
     override suspend fun getRandomUnseenPokemon(): PokemonGuessable {
         val pokemonNotFoundList = getPokemonNotFound()
         val random = Random()
-
         //De los pokemones no encontrados, traigo 4 al azar
         val randomPokemonList = mutableListOf<PokemonAnswer>()
         for (i in 0..3) {
