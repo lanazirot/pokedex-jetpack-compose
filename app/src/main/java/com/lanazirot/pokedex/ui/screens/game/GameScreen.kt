@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,7 +33,7 @@ fun GameScreen() {
     var viewModel: GameViewModel = hiltViewModel()
     var gameState = viewModel.gameState.collectAsState().value
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.startGame()
     }
 
@@ -41,7 +42,7 @@ fun GameScreen() {
             BallPulseSyncProgressIndicator()
         }
         is GameUI.PokemonFetched -> {
-            var currentPokemonToGuess = gameState.pokemonGuessable.pokemonAnswers.first { it.isCorrect }.pokemon
+            var currentPokemonToGuess = gameState.pokemonGuessable.answers.first { it.isCorrect }.pokemon
 
             Log.d("GameScreen", "Pokemon a adivinar: $currentPokemonToGuess")
 
@@ -103,37 +104,13 @@ fun GameScreen() {
                             .height(150.dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Column() {
-                            Image(
-                                painter = painterResource(id = R.drawable.opcion),
-                                contentDescription = "",
-                                Modifier
-                                    .width(175.dp)
-                                    .height(75.dp)
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.opcion),
-                                contentDescription = "",
-                                Modifier
-                                    .width(175.dp)
-                                    .height(75.dp)
-                            )
-                        }
-                        Column() {
-                            Image(
-                                painter = painterResource(id = R.drawable.opcion),
-                                contentDescription = "",
-                                Modifier
-                                    .width(175.dp)
-                                    .height(75.dp)
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.opcion),
-                                contentDescription = "",
-                                Modifier
-                                    .width(175.dp)
-                                    .height(75.dp)
-                            )
+                        Column{
+                            //For each pokemonAnswers in pokemonGuessable property of gameState, place a button with a text of the pokemon name and an onClick event that calls the viewModel's onPokemonAnswered function
+                            for(i in 0 until gameState.pokemonGuessable.answers.size){
+                                Button(onClick = { viewModel.guessPokemon(gameState.pokemonGuessable.answers[i]) }) {
+                                    Text(text = gameState.pokemonGuessable.answers[i].pokemon.name)
+                                }
+                            }
                         }
                     }
                 }
