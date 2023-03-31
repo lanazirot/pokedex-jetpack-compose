@@ -23,7 +23,7 @@ fun PokedexScreen(
     val pokemonFounded = currentUser.getPokemonFound()
 
     LaunchedEffect(Unit) {
-        allPokemon = currentUser.getAllPokemons()
+        allPokemon = currentUser.getAllPokemonList()
     }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

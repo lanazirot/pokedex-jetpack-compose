@@ -30,6 +30,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserManager(): IUserManager = UserManager()
+    fun provideUserManager(): IUserManager = UserManager(pokemonLocalRepository = providePokemonLocalRepository())
 
 }
