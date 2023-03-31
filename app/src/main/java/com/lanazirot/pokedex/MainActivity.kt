@@ -6,10 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.FabPosition
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.lanazirot.pokedex.ui.navigation.AppNavGraph
@@ -19,6 +22,7 @@ import com.lanazirot.pokedex.ui.providers.GlobalProvider
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
 import com.lanazirot.pokedex.ui.providers.UserProvider
 import com.lanazirot.pokedex.ui.screens.bottomappbar.BottomNavBar
+import com.lanazirot.pokedex.ui.screens.bottomappbar.NavigationCenterButton
 import com.lanazirot.pokedex.ui.screens.user.UserViewModel
 import com.lanazirot.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val userViewModel: UserViewModel by viewModels()
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,12 +62,11 @@ class MainActivity : ComponentActivity() {
                             color = MaterialTheme.colors.background
                         ) {
                             Scaffold(
-                                bottomBar = {
-                                    if (bottomBarVisibility.value) BottomNavBar()
-                                },
-                                content = {
-                                    AppNavGraph(globalProvider = gp)
-                                }
+                                bottomBar = { if (bottomBarVisibility.value) BottomNavBar() },
+                                floatingActionButtonPosition = FabPosition.Center,
+                                isFloatingActionButtonDocked = true,
+                                floatingActionButton = { if (bottomBarVisibility.value) NavigationCenterButton() },
+                                content = {  AppNavGraph(globalProvider = gp) }
                             )
                         }
                     }
