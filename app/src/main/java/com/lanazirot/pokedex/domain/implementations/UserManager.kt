@@ -2,9 +2,7 @@ package com.lanazirot.pokedex.domain.implementations
 
 import com.lanazirot.pokedex.domain.interfaces.IPokemonLocalRepository
 import com.lanazirot.pokedex.domain.interfaces.IUserManager
-import com.lanazirot.pokedex.domain.models.Pokemon
-import com.lanazirot.pokedex.domain.models.Score
-import com.lanazirot.pokedex.domain.models.User
+import com.lanazirot.pokedex.domain.models.*
 import java.util.*
 import javax.inject.Inject
 
@@ -13,6 +11,24 @@ class UserManager @Inject constructor(
 ) : IUserManager {
     private val totalPokemon = 151
     private var currentUser: User? = null
+
+    override suspend fun getRandomUnseenPokemon(): PokemonGuessable {
+        val pokemonNotFoundList = getPokemonNotFound()
+        val random = Random()
+
+        //De los pokemones no encontrados, traigo 4 al azar
+        val randomPokemonList = mutableListOf<PokemonAnswer>()
+        for (i in 0..3) {
+            val randomPokemon = pokemonNotFoundList[random.nextInt(pokemonNotFoundList.size)]
+            randomPokemonList.add(PokemonAnswer(pokemon = randomPokemon, isCorrect = false))
+        }
+        randomPokemonList[3].isCorrect = true
+
+        //Mezclo la lista de pokemon
+        randomPokemonList.shuffle()
+
+        return PokemonGuessable(pokemonAnswers = randomPokemonList)
+    }
 
     init {
         currentUser = User()
