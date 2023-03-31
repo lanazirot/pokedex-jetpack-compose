@@ -12,17 +12,6 @@ class UserManager @Inject constructor() : IUserManager {
 
     override fun getRandomUnseenPokemon(): PokemonGuessable {
         val pokemon: Pokemon = Pokemon()
-        // val listaPokemones = getPokemonNotFound()
-        // val random = Random()
-        // val pokemon = listaPokemones[random.nextInt(listaPokemones.size)]
-        // listaPokemones.remove(pokemon)
-        // val pokemonAnswers = mutableListOf<PokemonAnswer>()
-        // pokemonAnswers.add(PokemonAnswer(pokemon, true))
-        // for (i in 0..2) {
-        //     val pokemonAnswer = PokemonAnswer(getRandomPokemon(), false)
-        //     pokemonAnswers.add(pokemonAnswer)
-        // }
-        // pokemonAnswers.shuffle()
 
         return PokemonGuessable()
     }
