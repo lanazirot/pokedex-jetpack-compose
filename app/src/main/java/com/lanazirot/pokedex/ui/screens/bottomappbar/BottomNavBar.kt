@@ -34,7 +34,8 @@ fun NavBar() {
 
     val navItems = listOf(
         BottomNavItem.User,
-        BottomNavItem.Pokedex
+        BottomNavItem.Pokedex,
+        BottomNavItem.Game,
     )
 
     val navBack by navController.currentBackStackEntryAsState()
