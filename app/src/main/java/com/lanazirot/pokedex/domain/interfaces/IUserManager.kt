@@ -12,9 +12,10 @@ interface IUserManager {
     fun getTopThreeScores() : List<Score>
     fun getPokemonFound() : List<Pokemon>
     fun pokemonFoundByTypeCount(type: String): Int
-    fun getPokemonNotFound() : List<Pokemon>
+    suspend fun getPokemonNotFound() : List<Pokemon>
     fun pokemonLegendaryFoundCount() :Int
     fun attemptsCount() :Int
     fun getPokedexProgress() :Int
-    fun getAllPokemonList(): List<Pokemon>
+    suspend fun getAllPokemonList(): List<Pokemon>
+    fun isPokedexCompleted() : Boolean
 }
