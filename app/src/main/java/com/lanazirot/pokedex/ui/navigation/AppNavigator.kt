@@ -2,6 +2,7 @@ package com.lanazirot.pokedex.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.GameNavGraph
 import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.LoginNavGraph
 import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.PokedexNavGraph
 import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.UserNavGraph
@@ -16,5 +17,6 @@ fun AppNavGraph(globalProvider: AppProvider) {
         LoginNavGraph()
         UserNavGraph()
         PokedexNavGraph()
+        GameNavGraph()
     }
 }
