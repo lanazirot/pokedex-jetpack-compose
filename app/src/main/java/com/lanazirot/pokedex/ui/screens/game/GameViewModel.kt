@@ -69,25 +69,6 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
         //TODO: Navigate to end game screen and update user's stats
     }
 
-    fun fetchNextPokemonGuessable(): PokemonGuessable {
-//        val pokemonAnswers = mutableListOf<PokemonAnswer>()
-//        val correctPokemon = userManager.getRandomUnseenPokemon()
-//        pokemonAnswers.add(PokemonAnswer(correctPokemon, true))
-//        //Agregar otras 3 opciones incorrectas
-//        for (i in 0 until 3) {
-//            val incorrectPokemon = userManager.getRandomUnseenPokemon()
-//            pokemonAnswers.add(PokemonAnswer(incorrectPokemon, false))
-//        }
-//
-//
-//        pokemonAnswers.shuffle()
-//        return PokemonGuessable(pokemonAnswers)
-        return PokemonGuessable(
-            listOf(
-            )
-        )
-    }
-
     private fun restartTimer() {
         _timer = object : CountDownTimer((_gameState.value.remainingTime * 1000).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
