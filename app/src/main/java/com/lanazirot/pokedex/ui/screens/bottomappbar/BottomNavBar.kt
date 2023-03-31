@@ -17,7 +17,8 @@ fun BottomNavBar() {
 
     val navItems = listOf(
         BottomNavItem.User,
-        BottomNavItem.Pokedex
+        BottomNavItem.Pokedex,
+        BottomNavItem.Game,
     )
 
     BottomNavigation(
