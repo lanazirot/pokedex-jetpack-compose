@@ -2,6 +2,7 @@ package com.lanazirot.pokedex.ui.screens.game
 
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
+import com.lanazirot.pokedex.domain.interfaces.IUserManager
 import com.lanazirot.pokedex.domain.models.PokemonAnswer
 import com.lanazirot.pokedex.domain.models.PokemonGuessable
 import com.lanazirot.pokedex.ui.screens.user.UserViewModel
@@ -10,14 +11,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class GameViewModel @Inject constructor() : ViewModel() {
+class GameViewModel @Inject constructor(
+    private val userManager: IUserManager
+) : ViewModel() {
     private var _gameState: MutableStateFlow<GameState> = MutableStateFlow(GameState())
     val gameState = _gameState
 
     private var _timer: CountDownTimer? = null
 
 
-    suspend fun startGame() {
+    fun startGame() {
         _gameState.value = GameState(
             score = 0,
             lives = 3,
@@ -39,7 +42,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
         }.start()
     }
 
-    suspend fun guessPokemon(id: Int) {
+    fun guessPokemon(id: Int) {
         val isCorrect =
             _gameState.value.pokemonGuessable.pokemonAnswers.first { it.isCorrect }.pokemon.id == id
         if (isCorrect) {
@@ -61,19 +64,18 @@ class GameViewModel @Inject constructor() : ViewModel() {
         //TODO: Navigate to end game screen and update user's stats
     }
 
-    suspend fun fetchNextPokemonGuessable(): PokemonGuessable {
-    /*    var notFoundPokemonList = userViewModel.getNotFoundPokemon()
-        val pokemon = notFoundPokemonList.random()
-        notFoundPokemonList.remove(pokemon)*/
-
+    fun fetchNextPokemonGuessable(): PokemonGuessable {
         val pokemonAnswers = mutableListOf<PokemonAnswer>()
-     /*   pokemonAnswers.add(PokemonAnswer(pokemon, true))
-        //Remove the pokemon from the list
-        for (i in 1..3) {
-            val randomPokemon = notFoundPokemonList.random()
-            pokemonAnswers.add(PokemonAnswer(randomPokemon, false))
+        val correctPokemon = userManager.getRandomUnseenPokemon()
+        pokemonAnswers.add(PokemonAnswer(correctPokemon, true))
+        //Agregar otras 3 opciones incorrectas
+        for (i in 0 until 3) {
+            val incorrectPokemon = userManager.getRandomUnseenPokemon()
+            pokemonAnswers.add(PokemonAnswer(incorrectPokemon, false))
         }
-        pokemonAnswers.shuffle()*/
+
+
+        pokemonAnswers.shuffle()
         return PokemonGuessable(pokemonAnswers)
     }
 
