@@ -33,6 +33,7 @@ class UserManager @Inject constructor(
     init {
         currentUser = User()
         currentUser?.foundPokemonList = mutableListOf(Pokemon(id = 1, name = "Bulbasaur", type1 = "Grass", type2 = "Poison", legendary = "False"), Pokemon(id = 4, name = "Charmander", type1 = "Fire", type2 = "", legendary = "False"), Pokemon(id = 7, name = "Squirtle", type1 = "Water", type2 = "", legendary = "False"), Pokemon(id = 25, name = "Pikachu", type1 = "Electric", type2 = "", legendary = "False"), Pokemon(id = 133, name = "Eevee", type1 = "Normal", type2 = "", legendary = "False"), Pokemon(id = 150, name = "Mewtwo", type1 = "Psychic", type2 = "", legendary = "True"))
+        currentUser?.scoreLog = mutableListOf(Score(score = 340, date = ""), Score(score = 200, date = ""), Score(233, date = ""), Score(score= 2333, date = ""), Score(score =33333, date =""))
     }
 
     override fun setCurrentUser(user: User) {
