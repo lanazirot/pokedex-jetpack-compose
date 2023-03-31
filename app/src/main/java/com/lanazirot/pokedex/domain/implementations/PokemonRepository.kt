@@ -20,7 +20,7 @@ class PokemonRepository : IPokemonRepository {
 
     override suspend fun getPokemonById(id: Int): PokemonMapped {
         return withContext(Dispatchers.IO) {
-            val json = javaClass.classLoader?.getResource("pokemon.json")?.readText()
+            val json = javaClass.classLoader?.getResource("assets/json/pokemon.json")?.readText()
             val listType = object : TypeToken<List<PokemonMapped>>() {}.type
             val pokemonList = Gson().fromJson(json, listType) as List<PokemonMapped>
             pokemonList.first { it.id == id }
