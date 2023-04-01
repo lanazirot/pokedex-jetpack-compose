@@ -41,7 +41,8 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
 
 
     fun nextPokemon() {
-        _gameState.value = _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon, remainingTime = 5)
+        _gameState.value =
+            _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon, remainingTime = 5)
         viewModelScope.launch {
             delay(1000)
             fetchPokemon().collect { it ->
@@ -59,8 +60,17 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
 
     fun guessPokemon(answer: Answer) {
         _timer?.cancel()
-        val isCorrect = _gameState.value.pokemonGuessable.answers.first { it.isCorrect }.pokemon.id == answer.pokemon.id
+        val isCorrect =
+            _gameState.value.pokemonGuessable.answers.first { it.isCorrect }.pokemon.id == answer.pokemon.id
         val gameProgress = GameProgress(_gameState.value.pokemonGuessable, isCorrect)
+
+        val currentProgress = mutableListOf<GameProgress>()
+        currentProgress.addAll(_gameState.value.gameProgressResult.progress)
+        if (currentProgress.contains(gameProgress)) {
+            currentProgress.remove(gameProgress)
+            _gameState.value.gameProgressResult.progress = currentProgress
+        }
+
         if (isCorrect) {
             _gameState.value = _gameState.value.copy(
                 score = _gameState.value.score + _gameState.value.remainingTime * SCORE_RATE,
@@ -95,10 +105,14 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
     fun endGame() {
         _timer?.cancel()
         _gameState.value.gameProgressResult.score = _gameState.value.score
-        userManager.addToScoreLog(_gameState.value.score)
         viewModelScope.launch {
+            userManager.addToScoreLog(_gameState.value.score)
             delay(1500)
-            _gameState.value = _gameState.value.copy(looser = true, lives = 0, gameUIState = GameUIState.ShowingResult)
+            _gameState.value = _gameState.value.copy(
+                looser = true,
+                lives = 0,
+                gameUIState = GameUIState.ShowingResult
+            )
         }
     }
 
@@ -128,7 +142,7 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
     }
 
     private suspend fun fetchPokemon() = flow {
-        try{
+        try {
             emit(userManager.getRandomUnseenPokemon())
         } catch (e: Exception) {
             endGame()

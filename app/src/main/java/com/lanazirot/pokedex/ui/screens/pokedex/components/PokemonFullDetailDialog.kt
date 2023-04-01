@@ -75,7 +75,7 @@ fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
                 .clip(shape = RoundedCornerShape(5.dp))
                 .border(
                     width = 2.dp,
-                    color = Color.Black,
+                    color = Black,
                     shape = RoundedCornerShape(5.dp)
                 ),
             verticalAlignment = Alignment.CenterVertically
@@ -88,7 +88,7 @@ fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
                     .clip(shape = RoundedCornerShape(5.dp))
                     .border(
                         width = 1.dp,
-                        color = Color.Black,
+                        color = Black,
                         shape = RoundedCornerShape(5.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -184,7 +184,7 @@ fun PokemonImage(pokemon: Pokemon, isVisible: Boolean) {
                 .size(150.dp),
             contentScale = ContentScale.FillWidth,
             alignment = Alignment.Center,
-            colorFilter = if(!isVisible) ColorFilter.tint(Color.Black) else null,
+            colorFilter = if(!isVisible) ColorFilter.tint(Black) else null,
         )
     }
 }
