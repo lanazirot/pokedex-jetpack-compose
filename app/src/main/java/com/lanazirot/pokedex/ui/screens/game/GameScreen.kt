@@ -30,9 +30,9 @@ import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.GlobalProvider
 import com.lanazirot.pokedex.ui.screens.game.states.AnswerState
 import com.lanazirot.pokedex.ui.screens.game.states.GameUIState
-import com.lanazirot.pokedex.ui.screens.pokedex.components.EscribirPokemon
 import com.lanazirot.pokedex.ui.theme.Pokemon
 import com.lanazirot.pokedex.ui.theme.pokemonBlue
+import com.lanazirot.pokedex.ui.theme.pokemonYellow
 
 
 @Composable
@@ -285,6 +285,48 @@ fun GameScreen() {
         else -> {
             Log.d("GameScreen", "GameScreen ${gameState.gameUIState}")
             BallPulseSyncProgressIndicator()
+        }
+    }
+}
+
+@Composable
+fun EscribirPokemon(texto: String) {
+    Box(
+        modifier = Modifier
+            .height(95.dp)
+            .width(375.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = texto,
+                style = TextStyle(
+                    color = pokemonYellow,
+                    fontSize = 78.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontFamily = Pokemon
+                )
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = texto,
+                style = TextStyle(
+                    color = pokemonBlue,
+                    fontSize = 78.sp,
+                    fontWeight = FontWeight.Black,
+                    fontFamily = Pokemon
+                )
+            )
         }
     }
 }
