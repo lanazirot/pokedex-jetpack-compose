@@ -3,8 +3,8 @@ package com.lanazirot.pokedex.ui.screens.game
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -46,7 +47,11 @@ fun GameScreen() {
 
             Log.d("GameScreen", "Pokemon a adivinar: $currentPokemonToGuess")
 
-            Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Top) {
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 // Barra de vidas y score
                 Row(
                     modifier = Modifier
@@ -54,22 +59,24 @@ fun GameScreen() {
                         .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Vidas(vidas = gameState.lives)
-                    Text(text = "Score ${gameState.score}")
+                    Text(text = "Score ${gameState.score}", fontFamily = Pokemon, fontSize = 20.sp)
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        //Imagen adivida el Pokemon
-                        Image(
-                            painter = painterResource(id = R.drawable.fondo),
-                            contentDescription = "",
-                            Modifier.size(400.dp)
+                Box(modifier = Modifier.size(330.dp), contentAlignment = Alignment.Center) {
+
+                    Image(
+                        painter = painterResource(id = R.drawable.fondo),
+                        contentDescription = "",
+                        Modifier.fillMaxWidth()
+                    )
+
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = currentPokemonToGuess.getPathImage()
+                        ), contentDescription = "",
+                        modifier = Modifier.size(250.dp), colorFilter = ColorFilter.tint(
+                            Color.Black
                         )
-                    }
-                    //Titulo Pokemon
+                    )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -78,19 +85,10 @@ fun GameScreen() {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         EscribirPokemon(texto = " ??? ")
-                        Image(
-                            painter = rememberAsyncImagePainter(
-                                model = currentPokemonToGuess.getPathImage()
-                            ), contentDescription = "",
-                            Modifier
-                                .width(375.dp)
-                                .height(95.dp)
-                        )
                     }
 
                 }
-                // Espacio para abarcar toda la pantalla entre el pokemon y las opciones
-                Spacer(modifier = Modifier.height(30.dp))
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -98,19 +96,138 @@ fun GameScreen() {
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+
+                    val opcion1 = gameState.pokemonGuessable.answers[0]
+                    val nombre1 = opcion1.pokemon.name
+                    val opcion2 = gameState.pokemonGuessable.answers[1]
+                    val nombre2 = opcion2.pokemon.name
+                    val opcion3 = gameState.pokemonGuessable.answers[2]
+                    val nombre3 = opcion3.pokemon.name
+                    val opcion4 = gameState.pokemonGuessable.answers[3]
+                    val nombre4 = opcion4.pokemon.name
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(150.dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Column{
-                            //For each pokemonAnswers in pokemonGuessable property of gameState, place a button with a text of the pokemon name and an onClick event that calls the viewModel's onPokemonAnswered function
-                            for(i in 0 until gameState.pokemonGuessable.answers.size){
-                                Button(onClick = { viewModel.guessPokemon(gameState.pokemonGuessable.answers[i]) }) {
-                                    Text(text = gameState.pokemonGuessable.answers[i].pokemon.name)
-                                }
+                        Column() {
+
+                            Box() {
+                                Image(
+                                    painter = painterResource(id = R.drawable.opcion),
+                                    contentDescription = "", modifier =
+                                    Modifier
+                                        .width(175.dp)
+                                        .height(75.dp)
+                                        .clickable {
+                                            viewModel.guessPokemon(opcion1)
+                                        }
+                                )
+                                Text(
+                                    text = nombre1,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(10.dp),
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontFamily = Pokemon
+                                    )
+                                )
                             }
+                            Box() {
+                                Image(
+                                    painter = painterResource(id = R.drawable.opcion),
+                                    contentDescription = "", modifier =
+                                    Modifier
+                                        .width(175.dp)
+                                        .height(75.dp)
+                                        .clickable {
+                                            viewModel.guessPokemon(opcion2)
+                                        }
+                                )
+                                Text(
+                                    text = nombre2,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(10.dp),
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontFamily = Pokemon
+                                    )
+                                )
+                            }
+                        }
+                        Column() {
+                            Box(){
+                                Image(
+                                    painter = painterResource(id = R.drawable.opcion),
+                                    contentDescription = "", modifier =
+                                    Modifier
+                                        .width(175.dp)
+                                        .height(75.dp)
+                                        .clickable {
+                                            viewModel.guessPokemon(opcion3)
+                                        }
+                                )
+                                Text(
+                                    text = nombre3,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(10.dp),
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontFamily = Pokemon
+                                    )
+                                )
+                            }
+                            Box(){
+                                Image(
+                                    painter = painterResource(id = R.drawable.opcion),
+                                    contentDescription = "", modifier =
+                                    Modifier
+                                        .width(175.dp)
+                                        .height(75.dp)
+                                        .clickable {
+                                            viewModel.guessPokemon(opcion4)
+                                        }
+                                )
+                                Text(
+                                    text = nombre4,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(10.dp),
+                                    style = TextStyle(
+                                        color = Color.White,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        fontFamily = Pokemon
+                                    )
+                                )
+                            }
+
+                            Image(
+                                painter = painterResource(id = R.drawable.opcion),
+                                contentDescription = "", modifier =
+                                Modifier
+                                    .width(175.dp)
+                                    .height(75.dp)
+                                    .clickable { }
+                            )
+                            Image(
+                                painter = painterResource(id = R.drawable.opcion),
+                                contentDescription = "", modifier =
+                                Modifier
+                                    .width(175.dp)
+                                    .height(75.dp)
+                                    .clickable { }
+                            )
                         }
                     }
                 }
