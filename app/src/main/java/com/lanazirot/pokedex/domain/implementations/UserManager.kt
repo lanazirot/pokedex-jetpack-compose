@@ -9,31 +9,36 @@ import javax.inject.Inject
 class UserManager @Inject constructor(
     private val pokemonLocalRepository: IPokemonLocalRepository
 ) : IUserManager {
-    private val totalPokemon = 151
+    private val totalPokemon = 8
     private var currentUser: User? = null
 
 
     override suspend fun getRandomUnseenPokemon(): PokemonGuessable {
         val pokemonNotFoundList = getPokemonNotFound()
+        val allPokemonList = mutableListOf<Pokemon>()
+        allPokemonList.addAll(pokemonLocalRepository.getPokemonList())
+
         val random = Random()
-        //De los pokemones no encontrados, traigo 4 al azar
-        val randomPokemonList = mutableListOf<Answer>()
-        for (i in 0..3) {
-            val randomPokemon = pokemonNotFoundList[random.nextInt(pokemonNotFoundList.size)]
-            randomPokemonList.add(Answer(pokemon = randomPokemon, isCorrect = false))
+        val pokemonsAnswers = mutableListOf<Answer>()
+
+        val pokemonAux = pokemonNotFoundList[random.nextInt(pokemonNotFoundList.size)]
+        pokemonsAnswers.add(Answer(pokemon = pokemonAux, isCorrect = true))
+        allPokemonList.remove(pokemonAux)
+
+        for (i in 0..2) {
+            val randomPokemon = allPokemonList[random.nextInt(allPokemonList.size)]
+            pokemonsAnswers.add(Answer(pokemon = randomPokemon, isCorrect = false))
+            allPokemonList.remove(randomPokemon)
         }
-        randomPokemonList[3].isCorrect = true
 
-        //Mezclo la lista de pokemon
-        randomPokemonList.shuffle()
-
-        return PokemonGuessable(answers = randomPokemonList)
+        return PokemonGuessable(answers = pokemonsAnswers)
     }
 
     init {
         currentUser = User()
-        currentUser?.foundPokemonList = mutableListOf(Pokemon(id = 1, name = "Bulbasaur", type1 = "Grass", type2 = "Poison", legendary = "False"), Pokemon(id = 4, name = "Charmander", type1 = "Fire", type2 = "", legendary = "False"), Pokemon(id = 7, name = "Squirtle", type1 = "Water", type2 = "", legendary = "False"), Pokemon(id = 25, name = "Pikachu", type1 = "Electric", type2 = "", legendary = "False"), Pokemon(id = 133, name = "Eevee", type1 = "Normal", type2 = "", legendary = "False"), Pokemon(id = 150, name = "Mewtwo", type1 = "Psychic", type2 = "", legendary = "True"))
-        currentUser?.scoreLog = mutableListOf(Score(score = 340, date = Date()), Score(score = 200, date = Date()), Score(233, date = Date()), Score(score= 2333, date = Date()), Score(score =33333, date = Date()))
+//              currentUser?.foundPokemonList = mutableListOf(Pokemon(id = 1, name = "Bulbasaur", type1 = "Grass", type2 = "Poison", legendary = "False"), Pokemon(id = 4, name = "Charmander", type1 = "Fire", type2 = "", legendary = "False"), Pokemon(id = 7, name = "Squirtle", type1 = "Water", type2 = "", legendary = "False"), Pokemon(id = 25, name = "Pikachu", type1 = "Electric", type2 = "", legendary = "False"), Pokemon(id = 133, name = "Eevee", type1 = "Normal", type2 = "", legendary = "False"), Pokemon(id = 150, name = "Mewtwo", type1 = "Psychic", type2 = "", legendary = "True"))
+//        currentUser?.scoreLog = mutableListOf(Score(score = 34, date = Date()), Score(score = 10, date = Date()), Score(22, date = Date()), Score(score= 10, date = Date()), Score(score = 6, date = Date()))
+//        currentUser?.pokedexCompleted = true
     }
 
     override fun setCurrentUser(user: User) {

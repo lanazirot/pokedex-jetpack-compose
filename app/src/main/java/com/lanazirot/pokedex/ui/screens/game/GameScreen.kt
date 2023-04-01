@@ -307,7 +307,7 @@ private fun paintButtonIfCorrect(answer: AnswerState, pokemonFromPressedButton: 
 
 @Composable
 private fun Vidas(vidas: Int) {
-    Row(modifier = Modifier.width(120.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+    Row(modifier = Modifier.width(120.dp), horizontalArrangement = Arrangement.Start) {
         //Por cada vida, dibujar un corazon
         for (i in 0 until vidas) {
             Image(painter = painterResource(id = R.drawable.corazon), contentDescription = "")

@@ -11,10 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -86,7 +83,7 @@ fun PokemonTypeLabel(type: String){
 @Composable
 fun PokemonCountTypeLabel(type: String, count : Int){
     val painterico = rememberAsyncImagePainter(model = "file:///android_asset/types/${type}.png")
-    var fondo = TypeColors(type)
+    val fondo = TypeColors(type)
 
     Row(
         modifier = Modifier
