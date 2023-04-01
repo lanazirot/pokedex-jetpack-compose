@@ -46,7 +46,12 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.height(50.dp))
             OutlinedButton(
                 onClick = {
-                    navController.navigate(AppRoutes.User.Profile)
+                    navController.navigate(AppRoutes.User.Profile){
+                        popUpTo(AppRoutes.Login.Login){
+                            inclusive = true
+                            saveState = false
+                        }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()

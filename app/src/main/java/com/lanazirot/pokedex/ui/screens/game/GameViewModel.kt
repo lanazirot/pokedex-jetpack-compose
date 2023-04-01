@@ -1,12 +1,15 @@
 package com.lanazirot.pokedex.ui.screens.game
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lanazirot.pokedex.domain.constants.GameConstants.SCORE_RATE
 import com.lanazirot.pokedex.domain.interfaces.IUserManager
 import com.lanazirot.pokedex.domain.models.Answer
+import com.lanazirot.pokedex.domain.models.GameProgress
+import com.lanazirot.pokedex.ui.screens.game.states.AnswerState
+import com.lanazirot.pokedex.ui.screens.game.states.GameState
+import com.lanazirot.pokedex.ui.screens.game.states.GameUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,13 +26,13 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
 
 
     fun startGame() {
-        _gameState.value = GameState(gameUI = GameUI.FetchingPokemon)
+        _gameState.value = GameState(gameUIState = GameUIState.FetchingPokemon)
         viewModelScope.launch {
-            delay(1000)
-            fetchPokemon().collect {
+            delay(500)
+            fetchPokemon().collect { it ->
                 _gameState.value = GameState(
                     pokemonGuessable = it,
-                    gameUI = GameUI.PokemonFetched(it.answers.first { it.isCorrect }.pokemon)
+                    gameUIState = GameUIState.PokemonFetched(it.answers.first { it.isCorrect }.pokemon)
                 )
             }
         }
@@ -43,12 +46,12 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
     }
 
     suspend fun nextPokemon() {
-        _gameState.value = _gameState.value.copy(gameUI = GameUI.FetchingPokemon)
+        _gameState.value = _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon)
         delay(1500)
         fetchPokemon().collect {
             _gameState.value = _gameState.value.copy(
                 pokemonGuessable = it,
-                gameUI = GameUI.PokemonFetched(it.answers.first { it.isCorrect }.pokemon),
+                gameUIState = GameUIState.PokemonFetched(it.answers.first { it.isCorrect }.pokemon),
                 remainingTime = 5
             )
         }
@@ -56,22 +59,37 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
     }
 
     fun guessPokemon(answer: Answer) {
-        val isCorrect =
-            _gameState.value.pokemonGuessable.answers.first { it.isCorrect }.pokemon.id == answer.pokemon.id
+        _timer?.cancel()
+        val isCorrect = _gameState.value.pokemonGuessable.answers.first { it.isCorrect }.pokemon.id == answer.pokemon.id
+        val gameProgress = GameProgress(_gameState.value.pokemonGuessable, isCorrect)
         if (isCorrect) {
             _gameState.value = _gameState.value.copy(
-                score = _gameState.value.remainingTime * SCORE_RATE,
-                gameUI = GameUI.Loading
+                score = _gameState.value.score + _gameState.value.remainingTime * SCORE_RATE,
+                answer = AnswerState.Correct(answer = answer),
+                gameUIState = GameUIState.ShowingResult
             )
             userManager.addSeenPokemon(answer.pokemon)
-            Log.d("GameViewModel", "User ${userManager.getCurrentUser()} ")
         } else {
-            _gameState.value = _gameState.value.copy(lives = _gameState.value.lives - 1)
+            _gameState.value = _gameState.value.copy(
+                lives = _gameState.value.lives - 1,
+                answer = AnswerState.Incorrect(answer = answer),
+                gameUIState = GameUIState.ShowingResult
+            )
             if (_gameState.value.lives == 0) {
                 endGame()
             }
         }
-        viewModelScope.launch { nextPokemon() }
+
+        viewModelScope.launch {
+            delay(1500)
+            val gameProgressResult = _gameState.value.gameProgressResult
+            gameProgressResult.progress += gameProgress
+            _gameState.value = _gameState.value.copy(
+                answer = AnswerState.None,
+                gameProgressResult = gameProgressResult
+            )
+            nextPokemon()
+        }
     }
 
     fun endGame() {
@@ -90,6 +108,12 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
             override fun onFinish() {
                 if (_gameState.value.lives > 1) {
                     viewModelScope.launch {
+
+                        if (_gameState.value.gameUIState != GameUIState.ShowingResult) {
+                            _gameState.value =
+                                _gameState.value.copy(lives = _gameState.value.lives - 1)
+                        }
+
                         nextPokemon()
                     }
                 } else {
