@@ -310,7 +310,7 @@ fun EscribirPokemon(texto: String) {
                 text = texto,
                 style = TextStyle(
                     color = pokemonYellow,
-                    fontSize = 78.sp,
+                    fontSize = 58.sp,
                     fontWeight = FontWeight.ExtraBold,
                     fontFamily = Pokemon
                 )
@@ -326,7 +326,7 @@ fun EscribirPokemon(texto: String) {
                 text = texto,
                 style = TextStyle(
                     color = pokemonBlue,
-                    fontSize = 78.sp,
+                    fontSize = 58.sp,
                     fontWeight = FontWeight.Black,
                     fontFamily = Pokemon
                 )
