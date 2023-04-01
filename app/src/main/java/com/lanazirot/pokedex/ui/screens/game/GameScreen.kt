@@ -40,7 +40,16 @@ fun GameScreen() {
 
     when (gameState.gameUI) {
         is GameUI.Loading, GameUI.FetchingPokemon -> {
-            BallPulseSyncProgressIndicator()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                BallPulseSyncProgressIndicator(
+                    color = pokemonBlue
+                )
+            }
+
         }
         is GameUI.PokemonFetched -> {
             var currentPokemonToGuess = gameState.pokemonGuessable.answers.first { it.isCorrect }.pokemon
