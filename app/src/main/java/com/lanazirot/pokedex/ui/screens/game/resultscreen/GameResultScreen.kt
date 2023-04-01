@@ -45,7 +45,7 @@ fun GameResultScreen(gameProgressResult: GameProgressResult) {
                         item {
 
                         }
-                        items(gameProgressResult.removeRepeatedGameProgresses()) {
+                        items(gameProgressResult.progress) {
                             GameResultCard(gameProgress = it)
                         }
                     }

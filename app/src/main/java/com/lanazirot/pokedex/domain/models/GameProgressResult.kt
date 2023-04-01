@@ -10,12 +10,4 @@ data class GameProgress(val pokemonGuessable: PokemonGuessable, var wasCorrect: 
 }
 data class GameProgressResult(var progress: List<GameProgress> = mutableListOf(), var score: Int = 0){
     override fun toString(): String = Uri.encode(Gson().toJson(this))
-    fun removeRepeatedGameProgresses(): List<GameProgress> {
-        val progresses = mutableListOf<GameProgress>()
-        progresses.addAll(progress)
-        progresses.removeAll {
-            !it.wasCorrect && progresses.count { progress -> progress.pokemonGuessable == it.pokemonGuessable } > 1
-        }
-        return progresses
-    }
 }
