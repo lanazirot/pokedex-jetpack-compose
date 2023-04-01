@@ -17,17 +17,17 @@ class UserManager @Inject constructor(
         val pokemonNotFoundList = getPokemonNotFound()
         val random = Random()
         //De los pokemones no encontrados, traigo 4 al azar
-        val randomPokemonList = mutableListOf<PokemonAnswer>()
+        val randomPokemonList = mutableListOf<Answer>()
         for (i in 0..3) {
             val randomPokemon = pokemonNotFoundList[random.nextInt(pokemonNotFoundList.size)]
-            randomPokemonList.add(PokemonAnswer(pokemon = randomPokemon, isCorrect = false))
+            randomPokemonList.add(Answer(pokemon = randomPokemon, isCorrect = false))
         }
         randomPokemonList[3].isCorrect = true
 
         //Mezclo la lista de pokemon
         randomPokemonList.shuffle()
 
-        return PokemonGuessable(pokemonAnswers = randomPokemonList)
+        return PokemonGuessable(answers = randomPokemonList)
     }
 
     init {

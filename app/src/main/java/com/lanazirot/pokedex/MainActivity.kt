@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                                 floatingActionButton = { if (bottomBarVisibility.value) NavigationCenterButton() },
                                 content = {
                                     Column(
-                                        modifier = Modifier.padding(bottom = 20.dp).fillMaxSize()
+                                        modifier = Modifier.padding(bottom = if (bottomBarVisibility.value) 25.dp else 0.dp).fillMaxSize()
                                     ) {
                                         AppNavGraph(globalProvider = gp)
                                     }
@@ -84,18 +84,18 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+
     }
 }
 
-/*
-@Composable
-fun Greeting() {
-    val painter = rememberAsyncImagePainter(model = "file:///android_asset/images/019.png")
-    Image(
-        painter = painter,
-        contentDescription = "Imagen con filtro negro",
-        colorFilter = ColorFilter.tint(Color.Black)
-    )
-}
-
-*/
