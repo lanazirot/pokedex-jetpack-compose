@@ -9,7 +9,7 @@ import com.lanazirot.pokedex.domain.models.Pokemon
 fun PokedexList(allPokemon: List<Pokemon>, pokemonFounded: List<Pokemon>) {
     LazyColumn {
         items(allPokemon) {
-            p -> PokemonSimpleCard(pokemon = p, isVisible = pokemonFounded.contains(p))
+            p -> PokemonSimpleCard(pokemon = p, isVisible = true)//pokemonFounded.contains(p))
         }
     }
 }

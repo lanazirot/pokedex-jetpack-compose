@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -14,40 +16,77 @@ import com.lanazirot.pokedex.ui.theme.Pokemon
 import com.lanazirot.pokedex.ui.theme.pokemonBlue
 import com.lanazirot.pokedex.ui.theme.pokemonYellow
 
+fun pokemonYellow(fontSize:Int) = TextStyle(
+    color = pokemonYellow,
+    fontSize = fontSize.sp,
+    fontWeight = FontWeight.ExtraBold,
+    fontFamily = Pokemon
+)
+
+fun pokemonBlue(fontSize: Int) = TextStyle(
+    color = pokemonBlue,
+    fontSize = fontSize.sp,
+    fontWeight = FontWeight.Black,
+    fontFamily = Pokemon
+)
+
 @Composable
-fun PokemonHeaderLabel(texto:String){
-    Box(modifier = Modifier
-        .height(95.dp)
-        .width(350.dp)) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Transparent),
+fun PokemonHeaderLabel(text:String){
+    Box (
+        modifier = Modifier
+            .height(95.dp)
+            .width(350.dp))
+    {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = texto,
-                style = TextStyle(
-                    color = pokemonYellow,
-                    fontSize = 60.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontFamily = Pokemon
-                )
-            )
+            Text(text = text, style = pokemonYellow(60))
         }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Transparent),
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = texto,
-                style = TextStyle(
-                    color = pokemonBlue,
-                    fontSize = 60.sp,
-                    fontWeight = FontWeight.Black,
-                    fontFamily = Pokemon
-                )
-            )
+            Text(text = text, style = pokemonBlue(60))
         }
+    }
+}
+
+@Composable
+fun PokemonHeaderLabelVertical(text:String){
+    Box {
+        Text(
+            modifier = Modifier
+                .vertical()
+                .rotate(-90f)
+                .padding(4.dp),
+            style = pokemonYellow(50),
+            text = text
+        )
+        Text(
+            modifier = Modifier
+                .vertical()
+                .rotate(-90f)
+                .padding(4.dp),
+            style = pokemonBlue(50),
+            text = text
+        )
+    }
+}
+
+fun Modifier.vertical() =
+layout {
+    measurable, constraints ->
+    val placeable = measurable.measure(constraints)
+    layout(placeable.height, placeable.width) {
+        placeable.place(
+            x = -(placeable.width / 2 - placeable.height / 2),
+            y = -(placeable.height / 2 - placeable.width / 2)
+        )
     }
 }
