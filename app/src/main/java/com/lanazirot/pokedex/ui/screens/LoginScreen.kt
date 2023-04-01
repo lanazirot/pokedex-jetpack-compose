@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.GlobalProvider
+import com.lanazirot.pokedex.ui.theme.Pokemon
 
 @Composable
 fun LoginScreen() {
@@ -37,7 +38,10 @@ fun LoginScreen() {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.guessmon),
-                contentDescription = "Pokeball"
+                contentDescription = "Pokeball",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
             )
             Spacer(modifier = Modifier.height(50.dp))
             OutlinedButton(
@@ -56,7 +60,8 @@ fun LoginScreen() {
                     text = "Entrar",
                     modifier = Modifier.padding(10.dp),
                     color = androidx.compose.ui.graphics.Color.White,
-                    fontSize = 30.sp
+                    fontSize = 20.sp,
+                    fontFamily = Pokemon
                 )
                 Image(
                     painter = painterResource(id = R.drawable.pokeball),
