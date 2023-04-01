@@ -27,9 +27,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import com.lanazirot.pokedex.domain.models.Pokemon
-import com.lanazirot.pokedex.ui.theme.Pokemon
-import com.lanazirot.pokedex.ui.theme.pokemonRed
-import com.lanazirot.pokedex.ui.theme.pokemonYellow
+import com.lanazirot.pokedex.ui.theme.*
 
 @Composable
 fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit, isVisible: Boolean) {
@@ -83,7 +81,8 @@ fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color(rgb(120, 98, 17)))
+                    //.background(Color(rgb(120, 98, 17)))
+                    .background(pokemonRed)
                     .fillMaxHeight()
                     .clip(shape = RoundedCornerShape(5.dp))
                     .border(
@@ -149,8 +148,8 @@ fun PropertyLabel(name: String, value: String, isVisible: Boolean) {
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = name + ": ", modifier = Modifier.padding(4.dp).width(150.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
-        Text(text = if(isVisible) value else "???", modifier = Modifier.padding(4.dp), color = Color.Black, fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp)
+        Text(text = name + ": ", modifier = Modifier.padding(4.dp).width(150.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 13.sp, color = pokemonGold)
+        Text(text = if(isVisible) value else "???", modifier = Modifier.padding(4.dp), color = Color.Black, fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 13.sp)
     }
 }
 

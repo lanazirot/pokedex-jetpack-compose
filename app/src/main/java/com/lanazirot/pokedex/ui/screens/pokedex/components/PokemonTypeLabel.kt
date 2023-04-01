@@ -56,7 +56,7 @@ fun PokemonTypeLabel(type: String){
             )
             .background(fondo)
             .height(32.dp)
-            .width(150.dp)
+            .width(120.dp)
             .padding(5.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -71,20 +71,20 @@ fun PokemonTypeLabel(type: String){
             Text(
                 text = "$type ",
                 color = Color.White,
-                fontSize = 20.sp,
+                fontSize = 13.sp,
             )
-            Text(
-                text = "$type ",
-                color = Color.Black,
-                style = TextStyle.Default.copy(
-                    fontSize = 20.sp,
-                    drawStyle = Stroke(
-                        miter = 10f,
-                        width = 5f,
-                        join = StrokeJoin.Round
-                    )
-                )
-            )
+//            Text(
+//                text = "$type ",
+//                color = Color.Black,
+//                style = TextStyle.Default.copy(
+//                    fontSize = 20.sp,
+//                    drawStyle = Stroke(
+//                        miter = 10f,
+//                        width = 5f,
+//                        join = StrokeJoin.Round
+//                    )
+//                )
+//            )
         }
     }
 }

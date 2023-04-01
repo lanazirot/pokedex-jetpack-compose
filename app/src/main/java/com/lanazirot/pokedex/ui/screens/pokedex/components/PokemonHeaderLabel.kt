@@ -4,12 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lanazirot.pokedex.ui.theme.Pokemon
@@ -35,24 +37,26 @@ fun PokemonHeaderLabel(text:String){
     Box (
         modifier = Modifier
             .height(95.dp)
-            .width(350.dp))
+            .width(320.dp))
     {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Transparent),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = text, style = pokemonYellow(60))
+            Text(text = text, style = pokemonYellow(49), textAlign = TextAlign.Center)
         }
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Transparent),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = text, style = pokemonBlue(60))
+            Text(text = text, style = pokemonBlue(49), textAlign = TextAlign.Center)
         }
     }
 }
@@ -65,7 +69,7 @@ fun PokemonHeaderLabelVertical(text:String){
                 .vertical()
                 .rotate(-90f)
                 .padding(4.dp),
-            style = pokemonYellow(50),
+            style = pokemonYellow(49),
             text = text
         )
         Text(
@@ -73,7 +77,7 @@ fun PokemonHeaderLabelVertical(text:String){
                 .vertical()
                 .rotate(-90f)
                 .padding(4.dp),
-            style = pokemonBlue(50),
+            style = pokemonBlue(49),
             text = text
         )
     }

@@ -39,7 +39,8 @@ fun UserScreen() {
             modifier = Modifier.padding(16.dp),
             content =  {
                 item {
-                    PokemonHeaderLabel(text =" Estadisticas ")
+                    Spacer(modifier = Modifier.width(4.dp))
+                    PokemonHeaderLabel(text =" Estadisticas")
                     if(currentUser.isPokedexCompleted()){
                         Text(text="Has completado la pokedex")//TODO cambiar por imagen
                     }

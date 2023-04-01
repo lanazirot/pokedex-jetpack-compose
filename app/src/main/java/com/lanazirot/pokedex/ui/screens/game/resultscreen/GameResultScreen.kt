@@ -17,15 +17,15 @@ import com.lanazirot.pokedex.ui.screens.game.resultscreen.components.GameResultC
 
 @Composable
 fun GameResultScreen(gameProgressResult: GameProgressResult) {
+    Spacer(modifier = Modifier.height(16.dp))
     LazyColumn{
         items(gameProgressResult.progress) {
             GameResultCard(gameProgress = it)
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
     Row(modifier = Modifier.fillMaxWidth()){
         BlackButtonWithPokeball(
-            text = "Volver al menu principal",
+            text = "Inicio",
             route = AppRoutes.User.Profile,
             popUpTo = AppRoutes.Play.GameResult
         )
