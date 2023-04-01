@@ -91,7 +91,7 @@ fun GameScreen() {
                 Row(
                     modifier = Modifier
                         .padding(10.dp)
-                        .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+                        .fillMaxWidth(), horizontalArrangement = Arrangement.End
                 ) {
                     Text(text = "Time ${String.format("%02d:%02d", gameState.remainingTime / 60, gameState.remainingTime % 60)}", fontFamily = Pokemon, fontSize = 9.sp)
                 }
@@ -110,7 +110,7 @@ fun GameScreen() {
                         modifier = Modifier.size(250.dp),
                         colorFilter = when (gameState.answer) {
                             is AnswerState.Correct -> null
-                            is AnswerState.Incorrect -> ColorFilter.tint(Color.Red)
+                            is AnswerState.Incorrect, AnswerState.TimeOut -> ColorFilter.tint(Color.Red)
                             else -> ColorFilter.tint(Color.Black)
                         }
                     )
@@ -126,7 +126,7 @@ fun GameScreen() {
                             is AnswerState.Correct -> {
                                 EscribirPokemon(texto = currentPokemonToGuess.name)
                             }
-                            is AnswerState.Incorrect -> {
+                            is AnswerState.Incorrect, AnswerState.TimeOut -> {
                                 EscribirPokemon(texto = " ... ")
                             }
                             else -> {
@@ -179,7 +179,9 @@ fun GameScreen() {
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
-                                        .clickable {
+                                        .clickable(
+                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
+                                        ) {
                                             viewModel.guessPokemon(opcion1)
                                         }
                                 )
@@ -202,7 +204,9 @@ fun GameScreen() {
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
-                                        .clickable {
+                                        .clickable(
+                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
+                                        ) {
                                             viewModel.guessPokemon(opcion2)
                                         }
                                 )
@@ -229,7 +233,7 @@ fun GameScreen() {
                                         .width(175.dp)
                                         .height(75.dp)
                                         .clickable(
-                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult,
+                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
                                         ) {
                                             viewModel.guessPokemon(opcion3)
                                         }
@@ -254,7 +258,7 @@ fun GameScreen() {
                                         .width(175.dp)
                                         .height(75.dp)
                                         .clickable(
-                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult,
+                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
                                         ) {
                                             viewModel.guessPokemon(opcion4)
                                         }

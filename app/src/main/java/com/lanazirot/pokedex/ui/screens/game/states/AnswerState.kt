@@ -6,6 +6,7 @@ import com.lanazirot.pokedex.domain.models.Answer
 sealed class AnswerState {
     class Correct(val answer: Answer) : AnswerState()
     class Incorrect(val answer: Answer) : AnswerState()
+    object TimeOut : AnswerState()
     object  None: AnswerState()
 }
 
