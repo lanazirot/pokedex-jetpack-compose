@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +32,7 @@ import com.lanazirot.pokedex.ui.theme.pokemonRed
 import com.lanazirot.pokedex.ui.theme.pokemonYellow
 
 @Composable
-fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit) {
+fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit, isVisible: Boolean) {
     Dialog (
         onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(
@@ -55,7 +56,7 @@ fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit) {
                     .padding(10.dp),
                 contentAlignment = Alignment.TopEnd
             ) {
-                ContentDialog(pokemon)
+                ContentDialog(pokemon, isVisible)
                 CloseButton(onClick = { onDismissRequest() })
             }
         }
@@ -63,7 +64,7 @@ fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit) {
 }
 
 @Composable
-fun ContentDialog(pokemon: Pokemon) {
+fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -92,7 +93,7 @@ fun ContentDialog(pokemon: Pokemon) {
                     ),
                 contentAlignment = Alignment.Center
             ){
-                PokemonHeaderLabelVertical(text = pokemon.name)
+                PokemonHeaderLabelVertical(text = if(isVisible) pokemon.name else "Desconocido")
             }
 
             Column(
@@ -100,27 +101,29 @@ fun ContentDialog(pokemon: Pokemon) {
                     .fillMaxSize()
                     .background(Color.White)
             ) {
-                PokemonImage(pokemon = pokemon)
+                PokemonImage(pokemon = pokemon, isVisible = isVisible)
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                PropertyLabel(name = "ATAQUE", value = pokemon.attack.toString())
-                PropertyLabel(name = "DEFENSA", value = pokemon.defense.toString())
-                PropertyLabel(name = "HP", value = pokemon.hp.toString())
-                PropertyLabel(name = "ATAQUE ESPECIAL", value = pokemon.spAtk.toString())
-                PropertyLabel(name = "DEFENSA ESPECIAL", value = pokemon.spDef.toString())
-                PropertyLabel(name = "VELOCIDAD", value = pokemon.speed.toString())
+                PropertyLabel(name = "ATAQUE", value = pokemon.attack.toString(), isVisible = isVisible)
+                PropertyLabel(name = "DEFENSA", value = pokemon.defense.toString(), isVisible = isVisible)
+                PropertyLabel(name = "HP", value = pokemon.hp.toString(), isVisible = isVisible)
+                PropertyLabel(name = "ATAQUE ESPECIAL", value = pokemon.spAtk.toString(), isVisible = isVisible)
+                PropertyLabel(name = "DEFENSA ESPECIAL", value = pokemon.spDef.toString(), isVisible = isVisible)
+                PropertyLabel(name = "VELOCIDAD", value = pokemon.speed.toString(), isVisible = isVisible)
 
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    PokemonTypeLabel(type = pokemon.type1)
-                    if (pokemon.type2 != "") {
-                        Spacer(modifier = Modifier.height(5.dp))
-                        PokemonTypeLabel(type = pokemon.type2)
+                if(isVisible) {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        PokemonTypeLabel(type = pokemon.type1)
+                        if (pokemon.type2 != "") {
+                            Spacer(modifier = Modifier.height(5.dp))
+                            PokemonTypeLabel(type = pokemon.type2)
+                        }
                     }
                 }
             }
@@ -141,18 +144,18 @@ fun CloseButton(onClick : () -> Unit) {
 }
 
 @Composable
-fun PropertyLabel(name: String, value: String) {
+fun PropertyLabel(name: String, value: String, isVisible: Boolean) {
     Row(
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = name + ": ", modifier = Modifier.padding(4.dp).width(150.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
-        Text(text = value, modifier = Modifier.padding(4.dp), color = Color.Black, fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp)
+        Text(text = if(isVisible) value else "???", modifier = Modifier.padding(4.dp), color = Color.Black, fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp)
     }
 }
 
 @Composable
-fun PokemonImage(pokemon: Pokemon) {
+fun PokemonImage(pokemon: Pokemon, isVisible: Boolean) {
     val painterBackground = rememberAsyncImagePainter(model = "file:///android_asset/images/pokeball.png")
     val painter = rememberAsyncImagePainter(model = pokemon.getPathImage())
 
@@ -178,7 +181,8 @@ fun PokemonImage(pokemon: Pokemon) {
             modifier = Modifier
                 .size(150.dp),
             contentScale = ContentScale.FillWidth,
-            alignment = Alignment.Center
+            alignment = Alignment.Center,
+            colorFilter = if(!isVisible) ColorFilter.tint(Color.Black) else null,
         )
     }
 }
@@ -201,6 +205,7 @@ fun PreviewPokemonFullDetailDialog() {
             speed = 45,
             generation = 1,
             legendary = "false"
-        )
+        ),
+        isVisible = true
     )
 }

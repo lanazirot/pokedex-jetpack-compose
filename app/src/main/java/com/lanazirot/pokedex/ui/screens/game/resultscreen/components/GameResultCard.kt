@@ -10,9 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.lanazirot.pokedex.domain.models.GameProgress
-import com.lanazirot.pokedex.ui.screens.pokedex.components.HiddenCard
-import com.lanazirot.pokedex.ui.screens.pokedex.components.VisibleCard
-
+import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonCard
 
 @Composable
 fun GameResultCard(gameProgress: GameProgress) {
@@ -32,19 +30,21 @@ fun GameResultCard(gameProgress: GameProgress) {
         Row(
             modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.Center
         ) {
             if (!gameProgress.wasCorrect) {
-                HiddenCard(
+                PokemonCard(
                     painter = painter,
                     pokemon = correctPokemon,
-                    modifier = Modifier.size(imageHeight)
+                    modifier = Modifier.size(imageHeight),
+                    isVisible = false
                 )
             } else {
-                VisibleCard(
+                PokemonCard(
                     painter = painter,
                     pokemon = correctPokemon,
-                    modifier = Modifier.size(imageHeight)
+                    modifier = Modifier.size(imageHeight),
+                    isVisible = true
                 )
             }
         }

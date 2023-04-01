@@ -1,15 +1,11 @@
 package com.lanazirot.pokedex.ui.screens.pokedex.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,11 +20,11 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.domain.models.Pokemon
-import com.lanazirot.pokedex.ui.theme.pokemonRed
 
 @Composable
 fun PokemonSimpleCard(pokemon: Pokemon, isVisible: Boolean = false) {
     val painter = rememberAsyncImagePainter(model = pokemon.getPathImage())
+    var showCustomDialog by remember { mutableStateOf(false) }
     val imageHeight = 90.dp
 
     Card (
@@ -36,67 +32,38 @@ fun PokemonSimpleCard(pokemon: Pokemon, isVisible: Boolean = false) {
         backgroundColor = Color.White,
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth()
-            .height(120.dp)
+            .height(200.dp)
+            .clickable(onClick = { showCustomDialog = !showCustomDialog })
     ) {
-        Row (modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            if(isVisible) { //Ya descubrio el pokemon, muestra los datos
-                VisibleCard(painter = painter, pokemon = pokemon, modifier = Modifier.size(imageHeight))
-            } else { //No se muestran los datos
-                HiddenCard(painter = painter, pokemon = pokemon, modifier = Modifier.size(imageHeight))
-            }
+        Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+            PokemonCard(painter = painter, pokemon = pokemon, modifier = Modifier.size(imageHeight), isVisible = isVisible)
         }
-    }
-}
-
-@Composable
-fun HiddenCard(painter: AsyncImagePainter, pokemon: Pokemon, modifier: Modifier) {
-    Image(
-        painter = painter,
-        contentDescription = pokemon.name,
-        colorFilter =ColorFilter.tint(Color.Black) ,
-        modifier = modifier
-    )
-    Column(modifier = Modifier.padding(16.dp)) {
-        HeaderTextCard(text = getFormatedIdPokemon(pokemon.id) + " - " + stringResource(R.string.desconocido))
-    }
-}
-
-@Composable
-fun VisibleCard(painter: AsyncImagePainter, pokemon: Pokemon, modifier: Modifier) {
-    Image(
-        painter = painter,
-        contentDescription = pokemon.name,
-        modifier = modifier
-    )
-    Row (
-        modifier = Modifier.padding(16.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        HeaderTextCard(text = getFormatedIdPokemon(pokemon.id) + " - " + pokemon.name)
-        BotonVerPokemon(pokemon = pokemon)
-    }
-}
-
-@Composable
-fun BotonVerPokemon(pokemon: Pokemon) {
-    var showCustomDialog by remember { mutableStateOf(false) }
-
-    IconButton(
-        modifier = Modifier.size(30.dp)
-            .background(pokemonRed),
-        onClick = { showCustomDialog = !showCustomDialog }
-    ) {
-        Icon(Icons.Outlined.Add, "icon", tint = Color.White)
     }
 
     if (showCustomDialog) {
         PokemonFullDetailDialog(
             pokemon = pokemon,
-            onDismissRequest = { showCustomDialog = !showCustomDialog }
+            onDismissRequest = { showCustomDialog = !showCustomDialog },
+            isVisible = isVisible
         )
+    }
+}
+
+@Composable
+fun PokemonCard(painter: AsyncImagePainter, pokemon: Pokemon, modifier: Modifier, isVisible: Boolean) {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painter,
+            contentDescription = pokemon.name,
+            colorFilter = if(!isVisible) ColorFilter.tint(Color.Black) else null,
+            modifier = modifier
+        )
+
+        HeaderTextCard(text = getFormatedIdPokemon(pokemon.id) + " - " + if(isVisible) pokemon.name else stringResource(R.string.desconocido))
     }
 }
 
