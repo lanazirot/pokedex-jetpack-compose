@@ -36,7 +36,7 @@ fun LoginScreen() {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = R.drawable.pokemon),
+                painter = painterResource(id = R.drawable.guessmon),
                 contentDescription = "Pokeball"
             )
             Spacer(modifier = Modifier.height(50.dp))
