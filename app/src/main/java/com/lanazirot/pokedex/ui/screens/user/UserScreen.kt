@@ -15,6 +15,11 @@ import androidx.compose.ui.unit.sp
 import com.lanazirot.pokedex.domain.enums.PokemonType
 import com.lanazirot.pokedex.domain.models.Score
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
+import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonHeaderLabel
+import com.lanazirot.pokedex.ui.theme.pokemonBlack
+import com.lanazirot.pokedex.ui.theme.pokemonBrown
+import com.lanazirot.pokedex.ui.theme.pokemonGold
+import com.lanazirot.pokedex.ui.theme.pokemonRed
 import com.touchlane.gridpad.GridPad
 import com.touchlane.gridpad.GridPadCells
 import java.text.SimpleDateFormat
@@ -34,7 +39,7 @@ fun UserScreen() {
             modifier = Modifier.padding(16.dp),
             content =  {
                 item {
-                    Text(text="Mis estadisticas")
+                    PokemonHeaderLabel(text =" Estadisticas ")
                     if(currentUser.isPokedexCompleted()){
                         Text(text="Has completado la pokedex")//TODO cambiar por imagen
                     }
@@ -43,8 +48,9 @@ fun UserScreen() {
                     ScoreText(score)
                 }
                 item {
-                    Text(text = "Encontrados: " + currentUser.pokemonFoundCount() + " / " + currentUser.pokemonNotFoundCount())
-
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(text = "           Encontrados: " + currentUser.pokemonFoundCount() + " / " + currentUser.pokemonNotFoundCount(), color = pokemonRed)
+                    Spacer(modifier = Modifier.height(15.dp))
                     GridPad(
                         cells = GridPadCells(columnCount = columnCount, rowCount = rowCount),
                         Modifier.height(300.dp)
@@ -61,10 +67,12 @@ fun UserScreen() {
                 }
                 item {
                     CountPokemonByType(
-                        header = "LEGENDARIOS",
+                        header = "                LEGENDARIOS",
                         content = currentUser.pokemonLegendaryFoundCount()
                     )
-                    Text(text = "Numero de partidas jugadas: " + currentUser.attemptsCount())
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(text = "   Numero de partidas jugadas: " + currentUser.attemptsCount(), fontSize = 13.sp)
+                    Spacer(modifier = Modifier.height(10.dp))
                     ProgressBarFromNumber(progress = currentUser.getPokedexProgress())
                 }
             }
@@ -78,22 +86,25 @@ fun CountPokemonByType(header: String, content: Int) {
         modifier = Modifier.padding(8.dp)
     ) {
         Text(
-            text = header + ": ",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
+            text = header + " ",
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Normal,
+            color = pokemonBlack
         )
 
         Text(
             text = content.toString(),
-            fontSize = 16.sp,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Normal,
+            color = pokemonBrown
         )
     }
 }
 
 @Composable
 fun ScoreText(score: Score) {
-    Row {
-        Text(text = score.score.toString() + " - ", fontWeight = FontWeight.Bold)
+    Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Text(text = score.score.toString() + " - ", fontWeight = FontWeight.Bold, color = pokemonGold)
         DateFormatted(date = score.date!!)
     }
 }
@@ -101,7 +112,7 @@ fun ScoreText(score: Score) {
 @SuppressLint("SimpleDateFormat")
 @Composable
 fun DateFormatted(date: Date) {
-    Text(SimpleDateFormat("dd/MM/yyyy HH:mm").format(date))
+    Text(SimpleDateFormat("dd/MM/yyyy").format(date))
 }
 
 @Composable
@@ -111,7 +122,7 @@ fun ProgressBarFromNumber(progress: Int) {
             .fillMaxWidth()
     , horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Progreso: " + progress + "%")
+        Text(text = "Progreso: " + progress + "%", color = pokemonRed)
         LinearProgressIndicator(
             progress = progress.toFloat() / 100,
         )

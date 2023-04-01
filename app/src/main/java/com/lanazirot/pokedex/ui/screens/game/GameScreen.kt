@@ -179,7 +179,7 @@ fun GameScreen() {
 
                             Box {
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion1),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion1),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -204,7 +204,7 @@ fun GameScreen() {
                             }
                             Box {
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion2),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion2),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -232,7 +232,7 @@ fun GameScreen() {
                             Box {
 
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion3),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion3),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -257,7 +257,7 @@ fun GameScreen() {
                             }
                             Box {
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion4),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion4),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -294,7 +294,7 @@ fun GameScreen() {
 }
 
 @Composable
-private fun PaintButtonIfCorrect(answer: AnswerState, pokemonFromPressedButton: Answer): Painter {
+private fun paintButtonIfCorrect(answer: AnswerState, pokemonFromPressedButton: Answer): Painter {
     return when (answer) {
         is AnswerState.Correct -> painterResource(if (pokemonFromPressedButton == answer.answer) R.drawable.correcto else R.drawable.opcion)
         is AnswerState.Incorrect -> painterResource(if (pokemonFromPressedButton == answer.answer) R.drawable.incorrecto else R.drawable.opcion)

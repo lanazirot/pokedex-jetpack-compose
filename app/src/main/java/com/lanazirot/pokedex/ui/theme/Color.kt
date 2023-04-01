@@ -12,6 +12,7 @@ val pokemonBlack = Color(0xFF333333)
 val pokemonWhite = Color(0xFFFFFFFF)
 val pokemonBrown = Color(0xFF8B5A2B)
 val pokemonGray = Color(0xFFB6B6B6)
+val pokemonGold = Color(0xFFFFD700)
 
 val primary = pokemonRed
 val primaryVariant = pokemonYellow

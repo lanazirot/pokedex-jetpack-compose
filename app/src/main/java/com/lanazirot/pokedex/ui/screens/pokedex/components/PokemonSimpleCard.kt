@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,7 +70,7 @@ fun PokemonCard(painter: AsyncImagePainter, pokemon: Pokemon, modifier: Modifier
 
 @Composable
 fun HeaderTextCard(text: String) {
-    Text(text = text, fontWeight = FontWeight.Normal, fontSize = 15.sp)
+    Text(text = text, fontWeight = FontWeight.Normal, fontSize = 15.sp, textAlign = TextAlign.Center)
 }
 
 fun getFormatedIdPokemon(id: Int): String {
