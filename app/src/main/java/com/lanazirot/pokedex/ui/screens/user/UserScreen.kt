@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.lanazirot.pokedex.domain.enums.PokemonType
 import com.lanazirot.pokedex.domain.models.Score
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
+import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonCountTypeLabel
 import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonHeaderLabel
 import com.lanazirot.pokedex.ui.theme.pokemonBlack
 import com.lanazirot.pokedex.ui.theme.pokemonBrown
@@ -39,18 +40,21 @@ fun UserScreen() {
             modifier = Modifier.padding(16.dp),
             content =  {
                 item {
-                    Spacer(modifier = Modifier.width(4.dp))
-                    PokemonHeaderLabel(text =" Estadisticas")
+                    Row( modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        PokemonHeaderLabel(text =" Estadisticas")
+                    }
                     if(currentUser.isPokedexCompleted()){
                         Text(text="Has completado la pokedex")//TODO cambiar por imagen
                     }
                 }
-                items(currentUser.getTopThreeScores()) { score ->
+                items(currentUser.getTopThreeScores()) {score ->
                     ScoreText(score)
                 }
                 item {
                     Spacer(modifier = Modifier.height(15.dp))
-                    Text(text = "           Encontrados: " + currentUser.pokemonFoundCount() + " / " + currentUser.pokemonNotFoundCount(), color = pokemonRed)
+                    Text(text = "             Encontrados: " + currentUser.pokemonFoundCount() + " / " + currentUser.pokemonNotFoundCount(), color = pokemonRed)
                     Spacer(modifier = Modifier.height(15.dp))
                     GridPad(
                         cells = GridPadCells(columnCount = columnCount, rowCount = rowCount),
@@ -58,10 +62,7 @@ fun UserScreen() {
                     ) {
                         repeat(pokemonTypeSize) {
                             item {
-                                CountPokemonByType(
-                                    header = pokemonTypes[it].name,
-                                    content = currentUser.pokemonFoundByTypeCount(pokemonTypes[it].toString())
-                                )
+                                PokemonCountTypeLabel(pokemonTypes[it].name.lowercase().replaceFirstChar { it.uppercase() },currentUser.pokemonFoundByTypeCount(pokemonTypes[it].toString()))
                             }
                         }
                     }
@@ -104,8 +105,8 @@ fun CountPokemonByType(header: String, content: Int) {
 
 @Composable
 fun ScoreText(score: Score) {
-    Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-        Text(text = score.score.toString() + " - ", fontWeight = FontWeight.Bold, color = pokemonGold)
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Text(text = score.score.toString() + " - ", fontWeight = FontWeight.Bold, color = pokemonGold, fontSize = 15.sp)
         DateFormatted(date = score.date!!)
     }
 }

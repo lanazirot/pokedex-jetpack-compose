@@ -19,10 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 
-@OptIn(ExperimentalTextApi::class)
-@Composable
-fun PokemonTypeLabel(type: String){
-    val painterico = rememberAsyncImagePainter(model = "file:///android_asset/types/${type}.png")
+fun TypeColors (type : String): Color {
     var fondo = Color.White
     when (type)
     {
@@ -45,6 +42,15 @@ fun PokemonTypeLabel(type: String){
         "Steel" -> fondo = Color(92, 140, 164)
         "Water" -> fondo = Color(76, 147, 212 )
     }
+    return fondo
+}
+
+
+@OptIn(ExperimentalTextApi::class)
+@Composable
+fun PokemonTypeLabel(type: String){
+    val painterico = rememberAsyncImagePainter(model = "file:///android_asset/types/${type}.png")
+    var fondo = TypeColors(type)
 
     Row(
         modifier = Modifier
@@ -73,18 +79,42 @@ fun PokemonTypeLabel(type: String){
                 color = Color.White,
                 fontSize = 13.sp,
             )
-//            Text(
-//                text = "$type ",
-//                color = Color.Black,
-//                style = TextStyle.Default.copy(
-//                    fontSize = 20.sp,
-//                    drawStyle = Stroke(
-//                        miter = 10f,
-//                        width = 5f,
-//                        join = StrokeJoin.Round
-//                    )
-//                )
-//            )
+        }
+    }
+}
+
+@Composable
+fun PokemonCountTypeLabel(type: String, count : Int){
+    val painterico = rememberAsyncImagePainter(model = "file:///android_asset/types/${type}.png")
+    var fondo = TypeColors(type)
+
+    Row(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(15.dp))
+            .border(
+                width = 3.dp,
+                color = Color.Black,
+                shape = RoundedCornerShape(15.dp)
+            )
+            .background(fondo)
+            .height(32.dp)
+            .width(120.dp)
+            .padding(5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterico,
+            contentDescription = "Type",
+            modifier = Modifier,
+            alignment = Alignment.Center,
+        )
+        Box {
+            Text(
+                text = "${type}:\n${count}",
+                color = Color.White,
+                fontSize = 10.sp,
+            )
         }
     }
 }

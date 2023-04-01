@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -82,7 +83,7 @@ fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
             Box(
                 modifier = Modifier
                     //.background(Color(rgb(120, 98, 17)))
-                    .background(pokemonRed)
+                    .background(TypeColors(pokemon.type1))
                     .fillMaxHeight()
                     .clip(shape = RoundedCornerShape(5.dp))
                     .border(
@@ -100,6 +101,7 @@ fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
                     .fillMaxSize()
                     .background(Color.White)
             ) {
+                Spacer(modifier = Modifier.height(15.dp))
                 PokemonImage(pokemon = pokemon, isVisible = isVisible)
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -148,8 +150,8 @@ fun PropertyLabel(name: String, value: String, isVisible: Boolean) {
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = name + ": ", modifier = Modifier.padding(4.dp).width(150.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 13.sp, color = pokemonGold)
-        Text(text = if(isVisible) value else "???", modifier = Modifier.padding(4.dp), color = Color.Black, fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 13.sp)
+        Text(text = name + " ", modifier = Modifier.padding(4.dp).width(150.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 13.sp, color = pokemonBlack)
+        Text(text = if(isVisible) value else "???", modifier = Modifier.padding(4.dp),color = pokemonGold , fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 13.sp)
     }
 }
 
