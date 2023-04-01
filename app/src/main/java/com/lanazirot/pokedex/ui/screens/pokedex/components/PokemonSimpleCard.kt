@@ -70,7 +70,7 @@ fun PokemonCard(painter: AsyncImagePainter, pokemon: Pokemon, modifier: Modifier
 
 @Composable
 fun HeaderTextCard(text: String) {
-    Text(text = text, fontWeight = FontWeight.Normal, fontSize = 15.sp, textAlign = TextAlign.Center)
+    Text(text = text, fontWeight = FontWeight.Normal, fontSize = 12.sp, textAlign = TextAlign.Center, color = Color.Black)
 }
 
 fun getFormatedIdPokemon(id: Int): String {
