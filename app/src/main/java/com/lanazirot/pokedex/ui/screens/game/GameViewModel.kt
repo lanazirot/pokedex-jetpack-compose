@@ -28,7 +28,6 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
     fun startGame() {
         _gameState.value = GameState(gameUIState = GameUIState.FetchingPokemon)
         viewModelScope.launch {
-            delay(500)
             fetchPokemon().collect { it ->
                 _gameState.value = GameState(
                     pokemonGuessable = it,
@@ -41,20 +40,20 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
         restartTimer()
     }
 
-    fun restartGame() {
-        _gameState.value = GameState()
-    }
 
-    suspend fun nextPokemon() {
-        _gameState.value = _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon)
-        delay(1500)
-        fetchPokemon().collect {
-            _gameState.value = _gameState.value.copy(
-                pokemonGuessable = it,
-                gameUIState = GameUIState.PokemonFetched(it.answers.first { it.isCorrect }.pokemon),
-                remainingTime = 5
-            )
+    fun nextPokemon() {
+        _gameState.value = _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon, remainingTime = 5)
+        viewModelScope.launch {
+            fetchPokemon().collect { it ->
+                _gameState.value = _gameState.value.copy(
+                    pokemonGuessable = it,
+                    gameUIState = GameUIState.PokemonFetched(it.answers.first { it.isCorrect }.pokemon),
+                    answer = AnswerState.None,
+                    remainingTime = 5
+                )
+            }
         }
+        _timer?.cancel()
         restartTimer()
     }
 
@@ -106,14 +105,14 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
             }
 
             override fun onFinish() {
+                //Si entra aqui es porque a fuerza se acabo el tiempo
                 if (_gameState.value.lives > 1) {
                     viewModelScope.launch {
-
-                        if (_gameState.value.gameUIState != GameUIState.ShowingResult) {
-                            _gameState.value =
-                                _gameState.value.copy(lives = _gameState.value.lives - 1)
-                        }
-
+                        _gameState.value = _gameState.value.copy(
+                            lives = _gameState.value.lives - 1,
+                            answer = AnswerState.TimeOut,
+                        )
+                        delay(1500)
                         nextPokemon()
                     }
                 } else {
