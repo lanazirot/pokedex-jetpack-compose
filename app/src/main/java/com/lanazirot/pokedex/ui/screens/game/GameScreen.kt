@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,14 +47,6 @@ fun GameScreen() {
 
             Log.d("GameScreen", "Pokemon a adivinar: $currentPokemonToGuess")
 
-
-
-//            var currentPokemonToGuess = gameState.pokemonGuessable.answers.first { it.isCorrect }.pokemon
-//
-//            Log.d("GameScreen", "Pokemon a adivinar: $currentPokemonToGuess")
-
-
-
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Top,
@@ -68,15 +59,10 @@ fun GameScreen() {
                         .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Vidas(vidas = gameState.lives)
-                    Text(text = "Score ${gameState.score}")
+                    Text(text = "Score ${gameState.score}", fontFamily = Pokemon, fontSize = 20.sp)
                 }
-//                Spacer(modifier = Modifier.height(20.dp))
                 Box(modifier = Modifier.size(330.dp), contentAlignment = Alignment.Center) {
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.Center
-//                    ) {
-                    //Imagen adivida el Pokemon
+
                     Image(
                         painter = painterResource(id = R.drawable.fondo),
                         contentDescription = "",
@@ -91,8 +77,6 @@ fun GameScreen() {
                             Color.Black
                         )
                     )
-//                    }
-                    //Titulo Pokemon
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -101,19 +85,10 @@ fun GameScreen() {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         EscribirPokemon(texto = " ??? ")
-//                        Image(
-//                            painter = rememberAsyncImagePainter(
-//                                model = currentPokemonToGuess.getPathImage()
-//                            ), contentDescription = "",
-//                            Modifier
-//                                .width(375.dp)
-//                                .height(95.dp)
-//                        )
                     }
 
                 }
-                // Espacio para abarcar toda la pantalla entre el pokemon y las opciones
-//                Spacer(modifier = Modifier.height(30.dp))
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -121,15 +96,6 @@ fun GameScreen() {
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
-//                    val opcion1 = gameState.pokemonGuessable.pokemonAnswers[0].pokemon
-//                    val nombre1 = opcion1.name
-//                    val opcion2 = gameState.pokemonGuessable.pokemonAnswers[1].pokemon
-//                    val opcion3 = gameState.pokemonGuessable.pokemonAnswers[2].pokemon
-//                    val opcion4 = gameState.pokemonGuessable.pokemonAnswers[3].pokemon
-//                    val nombre2 = opcion2.name
-//                    val nombre3 = opcion3.name
-//                    val nombre4 = opcion4.name
 
                     val opcion1 = gameState.pokemonGuessable.answers[0]
                     val nombre1 = opcion1.pokemon.name
