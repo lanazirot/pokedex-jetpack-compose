@@ -102,7 +102,7 @@ fun BotonVerPokemon(pokemon: Pokemon) {
 
 @Composable
 fun HeaderTextCard(text: String) {
-    Text(text = text, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+    Text(text = text, fontWeight = FontWeight.Normal, fontSize = 15.sp)
 }
 
 fun getFormatedIdPokemon(id: Int): String {

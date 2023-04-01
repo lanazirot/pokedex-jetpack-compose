@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.domain.models.Pokemon
+import com.lanazirot.pokedex.ui.theme.*
 
 @Composable
 fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit) {
@@ -37,11 +39,11 @@ fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit) {
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            elevation = 8.dp,
-            backgroundColor = Color.White,
+                .padding(4.dp),
+            elevation = 4.dp,
+            backgroundColor = pokemonRed,
 
-        ) {
+            ) {
             Column {
                 ContentDialog(pokemon)
 
@@ -50,10 +52,16 @@ fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit) {
                         onClick = { onDismissRequest() },
                         Modifier
                             .fillMaxWidth()
-                            .padding(8.dp)
+                            .padding(4.dp)
                             .weight(1F)
+                            .background(pokemonRed)
                     ) {
-                        Text(text = stringResource(R.string.cerrar))
+                        Text(
+                            text = stringResource(R.string.cerrar),
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = Pokemon,
+                            color = pokemonBlack
+                        )
                     }
                 }
             }
@@ -76,20 +84,21 @@ fun ContentDialog(pokemon: Pokemon) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ){
-            Text(text = pokemon.name, modifier = Modifier.padding(8.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            EscribirPokemon(texto = pokemon.name)
+            //Text(text = pokemon.name, modifier = Modifier.padding(8.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
-
+        //Spacer(modifier = Modifier.height(10.dp))
         Box(
             modifier = Modifier
-                .size(160.dp)
-                .fillMaxSize()
+                //.size(160.dp)
+                .fillMaxWidth()
                 .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterBackground,
                 contentDescription = "pokeball",
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.width(250.dp).height(250.dp),
                 contentScale = ContentScale.FillWidth,
                 alignment = Alignment.Center
             )
@@ -97,75 +106,115 @@ fun ContentDialog(pokemon: Pokemon) {
             Image(
                 painter = painter,
                 contentDescription = "pokemon",
-                modifier = Modifier.fillMaxSize()
-                    .size(10.dp),
+                modifier = Modifier
+                    //.fillMaxWidth()
+                    .size(150.dp),
                 contentScale = ContentScale.FillWidth,
                 alignment = Alignment.Center
             )
         }
-
+        Spacer(modifier = Modifier.height(10.dp))
         Row(
             Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+                .fillMaxWidth()
+            //,horizontalArrangement = Arrangement.Center
         ) {
-            Text(text = "ATAQUE:", modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Yellow)
-            Text(text = pokemon.attack.toString(), modifier = Modifier.padding(8.dp), fontSize = 20.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(text = "DEFENSA:", modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Yellow)
-            Text(text = pokemon.defense.toString(), modifier = Modifier.padding(8.dp), fontSize = 20.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(text = "HP:", modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Yellow)
-            Text(text = pokemon.hp.toString(), modifier = Modifier.padding(8.dp), fontSize = 20.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(text = "ATAQUE ESPECIAL:", modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Yellow)
-            Text(text = pokemon.spAtk.toString(), modifier = Modifier.padding(8.dp), fontSize = 20.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(text = "DEFENSA ESPECIAL:", modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Yellow)
-            Text(text = pokemon.spDef.toString(), modifier = Modifier.padding(8.dp), fontSize = 20.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(text = "VELOCIDAD:", modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Yellow)
-            Text(text = pokemon.speed.toString(), modifier = Modifier.padding(8.dp), fontSize = 20.sp)
+            Text(text = "ATAQUE", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
+            Text(text = pokemon.attack.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
         }
 
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+            //,horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = "DEFENSA", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
+            Text(text = pokemon.defense.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
+        }
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+            //,horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = "HP", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
+            Text(text = pokemon.hp.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
+        }
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+            //,horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = "ATAQUE ESPECIAL", modifier = Modifier.padding(4.dp),  fontWeight = FontWeight.Normal, fontFamily = Pokemon,fontSize = 15.sp, color = pokemonYellow)
+            Text(text = pokemon.spAtk.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
+        }
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+            //,horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = "DEFENSA ESPECIAL", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
+            Text(text = pokemon.spDef.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
+        }
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+            //,horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = "VELOCIDAD", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
+            Text(text = pokemon.speed.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
+        }
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(4.dp)
+            //,horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = pokemon.type1, modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonGreen)
+            Text(text = pokemon.type2, modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonPurple)
+        }
+    }
+}
+
+
+@Composable
+fun EscribirPokemon(texto:String){
+    Box(modifier = Modifier
+        .height(95.dp)
+        .width(350.dp)) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Transparent),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text(text = pokemon.type1, modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Green)
-            Text(text = pokemon.type2, modifier = Modifier.padding(8.dp), fontSize = 20.sp, color = Color.Red)
+            Text(
+                text = texto,
+                style = TextStyle(
+                    color = pokemonYellow,
+                    fontSize = 60.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontFamily = Pokemon
+                )
+            )
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Transparent),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = texto,
+                style = TextStyle(
+                    color = pokemonBlue,
+                    fontSize = 60.sp,
+                    fontWeight = FontWeight.Black,
+                    fontFamily = Pokemon
+                )
+            )
         }
     }
 }
