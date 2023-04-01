@@ -1,7 +1,6 @@
 package com.lanazirot.pokedex.ui.screens.game
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -40,17 +38,15 @@ fun GameScreen() {
 
     var viewModel: GameViewModel = hiltViewModel()
     var gameState = viewModel.gameState.collectAsState().value
-    val context = LocalContext.current
     val navController = GlobalProvider.current.navigation
 
+    LaunchedEffect(Unit) { viewModel.startGame() }
 
-    LaunchedEffect(Unit) {  viewModel.startGame() }
+    LaunchedEffect(gameState.looser) {
+        if (gameState.looser) {
 
-    LaunchedEffect(gameState.looser){
-        if(gameState.looser) {
-            Toast.makeText(context, "Perdiste", Toast.LENGTH_SHORT).show()
-            navController.navigate(AppRoutes.User.Profile){
-                popUpTo(AppRoutes.User.Profile){
+            navController.navigate(AppRoutes.Play.gameResult(gameState.gameProgressResult.toString())) {
+                popUpTo(AppRoutes.User.Profile) {
                     inclusive = true
                 }
             }
@@ -93,7 +89,15 @@ fun GameScreen() {
                         .padding(10.dp)
                         .fillMaxWidth(), horizontalArrangement = Arrangement.End
                 ) {
-                    Text(text = "Time ${String.format("%02d:%02d", gameState.remainingTime / 60, gameState.remainingTime % 60)}", fontFamily = Pokemon, fontSize = 9.sp)
+                    Text(
+                        text = "Time ${
+                            String.format(
+                                "%02d:%02d",
+                                gameState.remainingTime / 60,
+                                gameState.remainingTime % 60
+                            )
+                        }", fontFamily = Pokemon, fontSize = 9.sp
+                    )
                 }
                 Box(modifier = Modifier.size(330.dp), contentAlignment = Alignment.Center) {
 
@@ -180,7 +184,7 @@ fun GameScreen() {
                                         .width(175.dp)
                                         .height(75.dp)
                                         .clickable(
-                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
+                                            enabled = gameState.gameUIState != GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
                                         ) {
                                             viewModel.guessPokemon(opcion1)
                                         }
@@ -205,7 +209,7 @@ fun GameScreen() {
                                         .width(175.dp)
                                         .height(75.dp)
                                         .clickable(
-                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
+                                            enabled = gameState.gameUIState != GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
                                         ) {
                                             viewModel.guessPokemon(opcion2)
                                         }
@@ -233,7 +237,7 @@ fun GameScreen() {
                                         .width(175.dp)
                                         .height(75.dp)
                                         .clickable(
-                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
+                                            enabled = gameState.gameUIState != GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
                                         ) {
                                             viewModel.guessPokemon(opcion3)
                                         }
@@ -258,7 +262,7 @@ fun GameScreen() {
                                         .width(175.dp)
                                         .height(75.dp)
                                         .clickable(
-                                            enabled = gameState.gameUIState!=GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
+                                            enabled = gameState.gameUIState != GameUIState.ShowingResult && gameState.answer != AnswerState.TimeOut
                                         ) {
                                             viewModel.guessPokemon(opcion4)
                                         }
