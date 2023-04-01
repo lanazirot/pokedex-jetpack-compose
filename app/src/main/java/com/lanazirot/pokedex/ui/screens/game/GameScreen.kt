@@ -28,9 +28,9 @@ import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.GlobalProvider
 import com.lanazirot.pokedex.ui.screens.game.states.AnswerState
 import com.lanazirot.pokedex.ui.screens.game.states.GameUIState
+import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonHeaderLabel
 import com.lanazirot.pokedex.ui.theme.Pokemon
 import com.lanazirot.pokedex.ui.theme.pokemonBlue
-import com.lanazirot.pokedex.ui.theme.pokemonYellow
 
 
 @Composable
@@ -128,13 +128,13 @@ fun GameScreen() {
                     ) {
                         when (gameState.answer) {
                             is AnswerState.Correct -> {
-                                EscribirPokemon(texto = currentPokemonToGuess.name)
+                                PokemonHeaderLabel(text = currentPokemonToGuess.name)
                             }
                             is AnswerState.Incorrect, AnswerState.TimeOut -> {
-                                EscribirPokemon(texto = " ... ")
+                                PokemonHeaderLabel(text = " ... ")
                             }
                             else -> {
-                                EscribirPokemon(texto = " ??? ")
+                                PokemonHeaderLabel(text = " ??? ")
                             }
                         }
                     }
@@ -179,7 +179,7 @@ fun GameScreen() {
 
                             Box {
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion1),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion1),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -204,7 +204,7 @@ fun GameScreen() {
                             }
                             Box {
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion2),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion2),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -232,7 +232,7 @@ fun GameScreen() {
                             Box {
 
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion3),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion3),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -257,7 +257,7 @@ fun GameScreen() {
                             }
                             Box {
                                 Image(
-                                    painter = PaintButtonIfCorrect(gameState.answer, opcion4),
+                                    painter = paintButtonIfCorrect(gameState.answer, opcion4),
                                     contentDescription = "", modifier = Modifier
                                         .width(175.dp)
                                         .height(75.dp)
@@ -294,49 +294,7 @@ fun GameScreen() {
 }
 
 @Composable
-fun EscribirPokemon(texto: String) {
-    Box(
-        modifier = Modifier
-            .height(95.dp)
-            .width(375.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Transparent),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = texto,
-                style = TextStyle(
-                    color = pokemonYellow,
-                    fontSize = 58.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontFamily = Pokemon
-                )
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Transparent),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = texto,
-                style = TextStyle(
-                    color = pokemonBlue,
-                    fontSize = 58.sp,
-                    fontWeight = FontWeight.Black,
-                    fontFamily = Pokemon
-                )
-            )
-        }
-    }
-}
-
-@Composable
-private fun PaintButtonIfCorrect(answer: AnswerState, pokemonFromPressedButton: Answer): Painter {
+private fun paintButtonIfCorrect(answer: AnswerState, pokemonFromPressedButton: Answer): Painter {
     return when (answer) {
         is AnswerState.Correct -> painterResource(if (pokemonFromPressedButton == answer.answer) R.drawable.correcto else R.drawable.opcion)
         is AnswerState.Incorrect -> painterResource(if (pokemonFromPressedButton == answer.answer) R.drawable.incorrecto else R.drawable.opcion)

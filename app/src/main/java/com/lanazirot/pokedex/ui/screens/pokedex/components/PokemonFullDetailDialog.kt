@@ -1,7 +1,9 @@
 package com.lanazirot.pokedex.ui.screens.pokedex.components
 
+import android.graphics.Color.rgb
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -13,7 +15,9 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,16 +27,116 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import com.lanazirot.pokedex.domain.models.Pokemon
-import com.lanazirot.pokedex.ui.screens.game.EscribirPokemon
 import com.lanazirot.pokedex.ui.theme.Pokemon
 import com.lanazirot.pokedex.ui.theme.pokemonRed
 import com.lanazirot.pokedex.ui.theme.pokemonYellow
 
 @Composable
+fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit, isVisible: Boolean) {
+    Dialog (
+        onDismissRequest = { onDismissRequest() },
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true
+        )
+    ) {
+        Card(
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(570.dp)
+                .padding(4.dp),
+            elevation = 4.dp,
+            backgroundColor = pokemonRed,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .padding(10.dp),
+                contentAlignment = Alignment.TopEnd
+            ) {
+                ContentDialog(pokemon, isVisible)
+                CloseButton(onClick = { onDismissRequest() })
+            }
+        }
+    }
+}
+
+@Composable
+fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .clip(shape = RoundedCornerShape(5.dp))
+                .border(
+                    width = 2.dp,
+                    color = Color.Black,
+                    shape = RoundedCornerShape(5.dp)
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(Color(rgb(120, 98, 17)))
+                    .fillMaxHeight()
+                    .clip(shape = RoundedCornerShape(5.dp))
+                    .border(
+                        width = 1.dp,
+                        color = Color.Black,
+                        shape = RoundedCornerShape(5.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ){
+                PokemonHeaderLabelVertical(text = if(isVisible) pokemon.name else "Desconocido")
+            }
+
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+            ) {
+                PokemonImage(pokemon = pokemon, isVisible = isVisible)
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                PropertyLabel(name = "ATAQUE", value = pokemon.attack.toString(), isVisible = isVisible)
+                PropertyLabel(name = "DEFENSA", value = pokemon.defense.toString(), isVisible = isVisible)
+                PropertyLabel(name = "HP", value = pokemon.hp.toString(), isVisible = isVisible)
+                PropertyLabel(name = "ATAQUE ESPECIAL", value = pokemon.spAtk.toString(), isVisible = isVisible)
+                PropertyLabel(name = "DEFENSA ESPECIAL", value = pokemon.spDef.toString(), isVisible = isVisible)
+                PropertyLabel(name = "VELOCIDAD", value = pokemon.speed.toString(), isVisible = isVisible)
+
+                if(isVisible) {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        PokemonTypeLabel(type = pokemon.type1)
+                        if (pokemon.type2 != "") {
+                            Spacer(modifier = Modifier.height(5.dp))
+                            PokemonTypeLabel(type = pokemon.type2)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun CloseButton(onClick : () -> Unit) {
     IconButton(
-        modifier = Modifier.size(40.dp)
-            .background(Color.White),
+        modifier = Modifier
+            .size(40.dp)
+            .background(Color.Transparent),
         onClick = { onClick() }
     ) {
         Icon(Icons.Outlined.Close, "icon", tint = pokemonRed)
@@ -40,141 +144,48 @@ fun CloseButton(onClick : () -> Unit) {
 }
 
 @Composable
-fun PokemonFullDetailDialog(pokemon: Pokemon, onDismissRequest: () -> Unit) {
-    Dialog(
-        onDismissRequest = { onDismissRequest() },
-        properties = DialogProperties(
-            dismissOnBackPress = false,
-            dismissOnClickOutside = false
-        )
+fun PropertyLabel(name: String, value: String, isVisible: Boolean) {
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Card(
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(598.dp)
-                .padding(4.dp),
-            elevation = 4.dp,
-            backgroundColor = pokemonRed,
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White),
-                horizontalAlignment = Alignment.End
-            ) {
-                CloseButton(onClick = { onDismissRequest() })
-                ContentDialog(pokemon)
-            }
-        }
+        Text(text = name + ": ", modifier = Modifier.padding(4.dp).width(150.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
+        Text(text = if(isVisible) value else "???", modifier = Modifier.padding(4.dp), color = Color.Black, fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp)
     }
 }
 
 @Composable
-fun ContentDialog(pokemon: Pokemon) {
-    val painter = rememberAsyncImagePainter(model = pokemon.getPathImage())
+fun PokemonImage(pokemon: Pokemon, isVisible: Boolean) {
     val painterBackground = rememberAsyncImagePainter(model = "file:///android_asset/images/pokeball.png")
+    val painter = rememberAsyncImagePainter(model = pokemon.getPathImage())
 
-    Column(
-        Modifier
+    Box(
+        modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(Color.White),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            EscribirPokemon(texto = pokemon.name)
-        }
-
-        Box(
+        Image(
+            painter = painterBackground,
+            contentDescription = "pokeball",
             modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterBackground,
-                contentDescription = "pokeball",
-                modifier = Modifier.width(250.dp).height(250.dp),
-                contentScale = ContentScale.FillWidth,
-                alignment = Alignment.Center
-            )
+                .width(250.dp)
+                .height(250.dp),
+            contentScale = ContentScale.FillWidth,
+            alignment = Alignment.Center
+        )
 
-            Image(
-                painter = painter,
-                contentDescription = "pokemon",
-                modifier = Modifier
-                    .size(150.dp),
-                contentScale = ContentScale.FillWidth,
-                alignment = Alignment.Center
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Row(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            Text(text = "ATAQUE", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
-            Text(text = pokemon.attack.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            Text(text = "DEFENSA", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
-            Text(text = pokemon.defense.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            Text(text = "HP", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
-            Text(text = pokemon.hp.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            Text(text = "ATAQUE ESPECIAL", modifier = Modifier.padding(4.dp),  fontWeight = FontWeight.Normal, fontFamily = Pokemon,fontSize = 15.sp, color = pokemonYellow)
-            Text(text = pokemon.spAtk.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            Text(text = "DEFENSA ESPECIAL", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
-            Text(text = pokemon.spDef.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            Text(text = "VELOCIDAD", modifier = Modifier.padding(4.dp), fontWeight = FontWeight.Normal, fontFamily = Pokemon, fontSize = 15.sp, color = pokemonYellow)
-            Text(text = pokemon.speed.toString(), modifier = Modifier.padding(4.dp), fontSize = 15.sp)
-        }
-
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            PokemonTypeLabel(type = pokemon.type1)
-            if(pokemon.type2 != ""){
-                Spacer(modifier = Modifier.width(width = 25.dp))
-                PokemonTypeLabel(type = pokemon.type2)
-            }
-        }
+        Image(
+            painter = painter,
+            contentDescription = "pokemon",
+            modifier = Modifier
+                .size(150.dp),
+            contentScale = ContentScale.FillWidth,
+            alignment = Alignment.Center,
+            colorFilter = if(!isVisible) ColorFilter.tint(Color.Black) else null,
+        )
     }
 }
-
 
 @Preview
 @Composable
@@ -194,6 +205,7 @@ fun PreviewPokemonFullDetailDialog() {
             speed = 45,
             generation = 1,
             legendary = "false"
-        )
+        ),
+        isVisible = true
     )
 }

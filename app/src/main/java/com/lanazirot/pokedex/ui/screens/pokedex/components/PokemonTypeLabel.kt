@@ -3,8 +3,7 @@ package com.lanazirot.pokedex.ui.screens.pokedex.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +22,7 @@ import coil.compose.rememberAsyncImagePainter
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun PokemonTypeLabel(type: String){
-    var painterico = rememberAsyncImagePainter(model = "file:///android_asset/types/${type}.png")
+    val painterico = rememberAsyncImagePainter(model = "file:///android_asset/types/${type}.png")
     var fondo = Color.White
     when (type)
     {
@@ -55,8 +54,12 @@ fun PokemonTypeLabel(type: String){
                 color = Color.Black,
                 shape = RoundedCornerShape(15.dp)
             )
-            .background(fondo),
-        verticalAlignment = Alignment.CenterVertically
+            .background(fondo)
+            .height(32.dp)
+            .width(150.dp)
+            .padding(5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Image(
             painter = painterico,
@@ -64,17 +67,17 @@ fun PokemonTypeLabel(type: String){
             modifier = Modifier,
             alignment = Alignment.Center,
         )
-        Box(){
+        Box {
             Text(
                 text = "$type ",
                 color = Color.White,
-                fontSize = 25.sp,
+                fontSize = 20.sp,
             )
             Text(
                 text = "$type ",
                 color = Color.Black,
                 style = TextStyle.Default.copy(
-                    fontSize = 25.sp,
+                    fontSize = 20.sp,
                     drawStyle = Stroke(
                         miter = 10f,
                         width = 5f,

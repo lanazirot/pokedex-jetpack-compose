@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.lanazirot.pokedex.domain.enums.PokemonType
 import com.lanazirot.pokedex.domain.models.Score
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
-import com.lanazirot.pokedex.ui.screens.game.EscribirPokemon
+import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonHeaderLabel
 import com.lanazirot.pokedex.ui.theme.pokemonBlack
 import com.lanazirot.pokedex.ui.theme.pokemonBrown
 import com.lanazirot.pokedex.ui.theme.pokemonGold
@@ -39,7 +39,7 @@ fun UserScreen() {
             modifier = Modifier.padding(16.dp),
             content =  {
                 item {
-                    EscribirPokemon(texto =" Estadisticas ")
+                    PokemonHeaderLabel(text =" Estadisticas ")
                     if(currentUser.isPokedexCompleted()){
                         Text(text="Has completado la pokedex")//TODO cambiar por imagen
                     }
