@@ -30,6 +30,8 @@ class UserManager @Inject constructor(private val pokemonLocalRepository: IPokem
             allPokemonList.remove(randomPokemon)
         }
 
+        pokemonsAnswers.shuffle()
+
         return PokemonGuessable(answers = pokemonsAnswers)
     }
 

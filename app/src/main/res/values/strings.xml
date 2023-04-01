@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pokedex</string>
+    <string name="app_name">Guessmon</string>
     <string name="desconocido">Desconocido..</string>
     <string name="cerrar">Cerrar</string>
 </resources>
