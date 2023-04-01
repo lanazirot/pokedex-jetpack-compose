@@ -49,7 +49,8 @@ class MainActivity : ComponentActivity() {
 
             val routesWithoutNavBarBottom = listOf(
                 AppRoutes.Login.Login,
-                AppRoutes.Play.Game
+                AppRoutes.Play.Game,
+                AppRoutes.Play.GameResult,
             )
 
             navController.addOnDestinationChangedListener { _, destination, _ ->

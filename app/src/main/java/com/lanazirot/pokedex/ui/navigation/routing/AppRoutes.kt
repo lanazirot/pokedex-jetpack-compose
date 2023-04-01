@@ -8,6 +8,8 @@ class AppRoutes {
 
     object Play {
         const val Game = "game"
+        const val GameResult = "game_result/{gameProgressResult}"
+        fun gameResult(gameProgressResult: String) = "game_result/$gameProgressResult"
     }
 
     object User {

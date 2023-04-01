@@ -81,20 +81,21 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
 
         viewModelScope.launch {
             delay(1500)
-            val gameProgressResult = _gameState.value.gameProgressResult
-            gameProgressResult.progress += gameProgress
-            _gameState.value = _gameState.value.copy(
-                answer = AnswerState.None,
-                gameProgressResult = gameProgressResult
-            )
+            addProgress(gameProgress)
             nextPokemon()
         }
     }
 
+    private fun addProgress(gameProgress: GameProgress) {
+        val gameProgressResult = _gameState.value.gameProgressResult
+        gameProgressResult.progress += gameProgress
+        _gameState.value = _gameState.value.copy(gameProgressResult = gameProgressResult)
+    }
+
     fun endGame() {
         _timer?.cancel()
-        _gameState.value = _gameState.value.copy(looser = true, lives = 0)
-        //TODO: Navigate to end game screen and update user's stats, also show a modal with the score
+        _gameState.value = _gameState.value.copy(looser = true, lives = 0, gameUIState = GameUIState.Loading)
+        viewModelScope.launch { delay(2000) }
     }
 
     private fun restartTimer() {
@@ -105,7 +106,7 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
             }
 
             override fun onFinish() {
-                //Si entra aqui es porque a fuerza se acabo el tiempo
+                addProgress(GameProgress(_gameState.value.pokemonGuessable, false))
                 if (_gameState.value.lives > 1) {
                     viewModelScope.launch {
                         _gameState.value = _gameState.value.copy(
