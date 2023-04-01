@@ -1,5 +1,6 @@
 package com.lanazirot.pokedex.domain.implementations
 
+import com.lanazirot.pokedex.domain.constants.GameConstants
 import com.lanazirot.pokedex.domain.interfaces.IPokemonLocalRepository
 import com.lanazirot.pokedex.domain.interfaces.IUserManager
 import com.lanazirot.pokedex.domain.models.*
@@ -7,7 +8,7 @@ import java.util.*
 import javax.inject.Inject
 
 class UserManager @Inject constructor(private val pokemonLocalRepository: IPokemonLocalRepository) : IUserManager {
-    private val totalPokemon = 8
+    private val totalPokemon = GameConstants.TOTAL_POKEMON
     private var currentUser: User? = null
 
 

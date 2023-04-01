@@ -2,6 +2,7 @@ package com.lanazirot.pokedex.ui.screens.bottomappbar
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -10,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.lanazirot.pokedex.ui.providers.GlobalProvider
@@ -49,8 +52,10 @@ fun NavBar() {
                 item ->
             BottomNavigationItem(
                 icon = {Icon(
-                    imageVector = item.icon,
-                    contentDescription = item.title)},
+                    imageVector = ImageVector.vectorResource(id = item.icon),
+                    contentDescription = item.title,
+                    modifier = Modifier.size(30.dp)
+                )},
                 label = { Text(text = item.title)},
                 selectedContentColor = Color.White,
                 unselectedContentColor = Color.Gray,

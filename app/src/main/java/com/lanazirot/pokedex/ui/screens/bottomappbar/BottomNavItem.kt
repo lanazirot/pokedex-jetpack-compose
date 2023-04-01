@@ -1,13 +1,10 @@
 package com.lanazirot.pokedex.ui.screens.bottomappbar
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 
-sealed class BottomNavItem(var title:String, var icon:ImageVector, var screen_route:String){
-    object User : BottomNavItem("Home", Icons.Filled.Person,AppRoutes.User.Profile)
-    object Pokedex : BottomNavItem("Pokedex", Icons.Filled.Person,AppRoutes.Pokedex.PokemonList)
-    object Game : BottomNavItem("Game", Icons.Filled.Face,AppRoutes.Play.Game)
+sealed class BottomNavItem(var title:String,@DrawableRes var icon: Int, var screen_route:String){
+    object User : BottomNavItem("Home",  R.drawable.profile  ,AppRoutes.User.Profile)
+    object Pokedex : BottomNavItem("Pokedex", R.drawable.pokedex ,AppRoutes.Pokedex.PokemonList)
 }
