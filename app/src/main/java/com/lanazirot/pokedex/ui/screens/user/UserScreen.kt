@@ -1,6 +1,7 @@
 package com.lanazirot.pokedex.ui.screens.user
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,9 +10,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.domain.enums.PokemonType
 import com.lanazirot.pokedex.domain.models.Score
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
@@ -38,6 +41,7 @@ fun UserScreen() {
     BoxWithConstraints {
         LazyColumn(
             modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             content =  {
                 item {
                     Row( modifier = Modifier.fillMaxWidth(),
@@ -46,7 +50,18 @@ fun UserScreen() {
                         PokemonHeaderLabel(text =" Estadisticas")
                     }
                     if(currentUser.isPokedexCompleted()){
-                        Text(text="Has completado la pokedex")//TODO cambiar por imagen
+                        Image(
+                            painter = painterResource(id = R.drawable.medallapokedexcompletada),
+                            contentDescription = "Pokedex completada",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                        )
+                    }
+
+                    Text(text = "TOP 3 Puntuaciones:", color = pokemonBlack)
+                    if(currentUser.getTopThreeScores().isEmpty()){
+                        Text(text = "Aun no hay puntuaciones", fontSize = 10.sp)
                     }
                 }
                 items(currentUser.getTopThreeScores()) {score ->
@@ -54,27 +69,27 @@ fun UserScreen() {
                 }
                 item {
                     Spacer(modifier = Modifier.height(15.dp))
-                    Text(text = "             Encontrados: " + currentUser.pokemonFoundCount() + " / " + currentUser.pokemonNotFoundCount(), color = pokemonRed)
+                    Text(text = "Encontrados: " + currentUser.pokemonFoundCount() + " / " + currentUser.pokemonNotFoundCount(), color = pokemonRed)
                     Spacer(modifier = Modifier.height(15.dp))
                     GridPad(
                         cells = GridPadCells(columnCount = columnCount, rowCount = rowCount),
                         Modifier.height(300.dp)
                     ) {
                         repeat(pokemonTypeSize) {
-                            item {
-                                PokemonCountTypeLabel(pokemonTypes[it].name.lowercase().replaceFirstChar { it.uppercase() },currentUser.pokemonFoundByTypeCount(pokemonTypes[it].toString()))
+                            item{
+                                PokemonCountTypeLabel(pokemonTypes[it].name.lowercase().replaceFirstChar { it.uppercase() }, currentUser.pokemonFoundByTypeCount(pokemonTypes[it].toString()))
                             }
                         }
                     }
                 }
                 item {
                     CountPokemonByType(
-                        header = "                LEGENDARIOS",
+                        header = "LEGENDARIOS",
                         content = currentUser.pokemonLegendaryFoundCount()
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(text = "   Numero de partidas jugadas: " + currentUser.attemptsCount(), fontSize = 13.sp)
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(text = "Numero de partidas jugadas: " + currentUser.attemptsCount(), fontSize = 13.sp)
+                    Spacer(modifier = Modifier.height(15.dp))
                     ProgressBarFromNumber(progress = currentUser.getPokedexProgress())
                 }
             }
@@ -85,7 +100,8 @@ fun UserScreen() {
 @Composable
 fun CountPokemonByType(header: String, content: Int) {
     Row(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp),
+        horizontalArrangement = Arrangement.Center,
     ) {
         Text(
             text = header + " ",
@@ -106,7 +122,7 @@ fun CountPokemonByType(header: String, content: Int) {
 @Composable
 fun ScoreText(score: Score) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-        Text(text = score.score.toString() + " - ", fontWeight = FontWeight.Bold, color = pokemonGold, fontSize = 15.sp)
+        Text(text = score.score.toString() + " pts. - ", fontWeight = FontWeight.Bold, color = pokemonGold, fontSize = 15.sp)
         DateFormatted(date = score.date!!)
     }
 }

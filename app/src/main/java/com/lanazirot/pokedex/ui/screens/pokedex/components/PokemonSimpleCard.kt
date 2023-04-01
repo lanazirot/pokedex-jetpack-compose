@@ -34,7 +34,7 @@ fun PokemonSimpleCard(pokemon: Pokemon, isVisible: Boolean = false) {
         modifier = Modifier
             .padding(8.dp)
             .height(200.dp)
-            .clickable(onClick = { showCustomDialog = !showCustomDialog })
+            .clickable(onClick = { if(isVisible) showCustomDialog = !showCustomDialog })
     ) {
         Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
             PokemonCard(painter = painter, pokemon = pokemon, modifier = Modifier.size(imageHeight), isVisible = isVisible)

@@ -24,7 +24,6 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
 
     private var _timer: CountDownTimer? = null
 
-
     fun startGame() {
         _gameState.value = GameState(gameUIState = GameUIState.FetchingPokemon)
         viewModelScope.launch {
@@ -94,6 +93,8 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
 
     fun endGame() {
         _timer?.cancel()
+        _gameState.value.gameProgressResult.score = _gameState.value.score
+        userManager.addToScoreLog(_gameState.value.score)
         _gameState.value = _gameState.value.copy(looser = true, lives = 0, gameUIState = GameUIState.Loading)
         viewModelScope.launch { delay(2000) }
     }
@@ -125,7 +126,11 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
 
 
     private suspend fun fetchPokemon() = flow {
-        emit(userManager.getRandomUnseenPokemon())
+        try{
+            emit(userManager.getRandomUnseenPokemon())
+        } catch (e: Exception) {
+            endGame()
+        }
     }
 
 }
