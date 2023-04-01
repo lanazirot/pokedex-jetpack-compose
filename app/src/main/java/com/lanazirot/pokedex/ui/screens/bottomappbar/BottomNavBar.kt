@@ -21,7 +21,6 @@ fun BottomNavBar() {
             .height(65.dp)
             .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp)),
         cutoutShape = CircleShape,
-        //backgroundColor = Color.White,
         elevation = 22.dp
     ) {
         NavBar()

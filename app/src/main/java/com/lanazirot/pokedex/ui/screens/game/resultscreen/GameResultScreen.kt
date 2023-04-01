@@ -27,12 +27,12 @@ fun GameResultScreen(gameProgressResult: GameProgressResult) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(16.dp, top = 25.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = "Puntuacion final: " + gameProgressResult.score.toString(),
-                        fontSize = 25.sp,
+                        fontSize = 20.sp,
                         color = pokemonGold
                     )
                 }
@@ -45,7 +45,7 @@ fun GameResultScreen(gameProgressResult: GameProgressResult) {
                         item {
 
                         }
-                        items(gameProgressResult.progress) {
+                        items(gameProgressResult.removeRepeatedGameProgresses()) {
                             GameResultCard(gameProgress = it)
                         }
                     }

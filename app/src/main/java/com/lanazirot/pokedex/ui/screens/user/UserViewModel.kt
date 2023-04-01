@@ -2,24 +2,15 @@ package com.lanazirot.pokedex.ui.screens.user
 
 
 import androidx.lifecycle.ViewModel
-import com.lanazirot.pokedex.domain.implementations.UserManager
-import com.lanazirot.pokedex.domain.interfaces.IPokemonLocalRepository
+import com.lanazirot.pokedex.domain.constants.GameConstants
 import com.lanazirot.pokedex.domain.interfaces.IUserManager
-import com.lanazirot.pokedex.domain.models.*
+import com.lanazirot.pokedex.domain.models.Pokemon
+import com.lanazirot.pokedex.domain.models.Score
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
-    private val userManager: IUserManager
-) :ViewModel() {
-    private val totalPokemon = 151
-
-    init {
-    }
+class UserViewModel @Inject constructor(private val userManager: IUserManager) :ViewModel() {
 
     /**
      * Agrega un pokemon a la lista de pokemon encontrados por el usuario
@@ -62,7 +53,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun pokemonNotFoundCount(): Int {
-        return 151 - pokemonFoundCount()
+        return GameConstants.TOTAL_POKEMON - pokemonFoundCount()
     }
 
     /**

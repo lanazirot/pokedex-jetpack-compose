@@ -43,6 +43,7 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
     fun nextPokemon() {
         _gameState.value = _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon, remainingTime = 5)
         viewModelScope.launch {
+            delay(1000)
             fetchPokemon().collect { it ->
                 _gameState.value = _gameState.value.copy(
                     pokemonGuessable = it,
@@ -79,8 +80,8 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
         }
 
         viewModelScope.launch {
-            delay(1500)
             addProgress(gameProgress)
+            delay(1500)
             nextPokemon()
         }
     }
@@ -95,8 +96,10 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
         _timer?.cancel()
         _gameState.value.gameProgressResult.score = _gameState.value.score
         userManager.addToScoreLog(_gameState.value.score)
-        _gameState.value = _gameState.value.copy(looser = true, lives = 0, gameUIState = GameUIState.Loading)
-        viewModelScope.launch { delay(2000) }
+        viewModelScope.launch {
+            delay(1500)
+            _gameState.value = _gameState.value.copy(looser = true, lives = 0, gameUIState = GameUIState.ShowingResult)
+        }
     }
 
     private fun restartTimer() {
@@ -123,7 +126,6 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
             }
         }.start()
     }
-
 
     private suspend fun fetchPokemon() = flow {
         try{

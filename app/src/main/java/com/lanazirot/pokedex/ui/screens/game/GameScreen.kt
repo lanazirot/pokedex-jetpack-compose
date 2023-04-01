@@ -40,7 +40,10 @@ fun GameScreen() {
     var gameState = viewModel.gameState.collectAsState().value
     val navController = GlobalProvider.current.navigation
 
-    LaunchedEffect(Unit) { viewModel.startGame() }
+
+    LaunchedEffect(Unit) {
+        viewModel.startGame()
+    }
 
     LaunchedEffect(gameState.looser) {
         if (gameState.looser) {
@@ -99,16 +102,19 @@ fun GameScreen() {
                         }", fontFamily = Pokemon, fontSize = 9.sp
                     )
                 }
-                Box(modifier = Modifier
-                    //.size(430.dp)
-                    .fillMaxWidth()
-                    , contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        //.size(430.dp)
+                        .fillMaxWidth(), contentAlignment = Alignment.Center
+                ) {
 
 
                     Image(
                         painter = painterResource(id = R.drawable.fondo),
                         contentDescription = "",
-                        Modifier.fillMaxWidth().size(420.dp)
+                        Modifier
+                            .fillMaxWidth()
+                            .size(420.dp)
                     )
 
                     Image(
@@ -131,7 +137,7 @@ fun GameScreen() {
                     ) {
                         when (gameState.answer) {
                             is AnswerState.Correct -> {
-                                PokemonHeaderLabel(text = " " + currentPokemonToGuess.name +" ")
+                                PokemonHeaderLabel(text = " " + currentPokemonToGuess.name + " ")
                             }
                             is AnswerState.Incorrect, AnswerState.TimeOut -> {
                                 PokemonHeaderLabel(text = " ... ")
