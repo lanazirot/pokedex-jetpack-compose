@@ -6,9 +6,7 @@ import com.lanazirot.pokedex.domain.models.*
 import java.util.*
 import javax.inject.Inject
 
-class UserManager @Inject constructor(
-    private val pokemonLocalRepository: IPokemonLocalRepository
-) : IUserManager {
+class UserManager @Inject constructor(private val pokemonLocalRepository: IPokemonLocalRepository) : IUserManager {
     private val totalPokemon = 8
     private var currentUser: User? = null
 
@@ -36,9 +34,6 @@ class UserManager @Inject constructor(
 
     init {
         currentUser = User()
-//              currentUser?.foundPokemonList = mutableListOf(Pokemon(id = 1, name = "Bulbasaur", type1 = "Grass", type2 = "Poison", legendary = "False"), Pokemon(id = 4, name = "Charmander", type1 = "Fire", type2 = "", legendary = "False"), Pokemon(id = 7, name = "Squirtle", type1 = "Water", type2 = "", legendary = "False"), Pokemon(id = 25, name = "Pikachu", type1 = "Electric", type2 = "", legendary = "False"), Pokemon(id = 133, name = "Eevee", type1 = "Normal", type2 = "", legendary = "False"), Pokemon(id = 150, name = "Mewtwo", type1 = "Psychic", type2 = "", legendary = "True"))
-//        currentUser?.scoreLog = mutableListOf(Score(score = 34, date = Date()), Score(score = 10, date = Date()), Score(22, date = Date()), Score(score= 10, date = Date()), Score(score = 6, date = Date()))
-//        currentUser?.pokedexCompleted = true
     }
 
     override fun setCurrentUser(user: User) {
