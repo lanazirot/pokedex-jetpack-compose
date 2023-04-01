@@ -114,6 +114,7 @@ fun ContentDialog(pokemon: Pokemon, isVisible: Boolean) {
                 PropertyLabel(name = "VELOCIDAD", value = pokemon.speed.toString(), isVisible = isVisible)
 
                 if(isVisible) {
+                    Spacer(modifier = Modifier.height(25.dp))
                     Column(
                         Modifier
                             .fillMaxWidth()

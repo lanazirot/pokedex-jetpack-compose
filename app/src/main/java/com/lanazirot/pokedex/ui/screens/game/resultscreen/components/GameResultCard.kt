@@ -25,7 +25,7 @@ fun GameResultCard(gameProgress: GameProgress) {
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
-            .height(300.dp)
+            .height(250.dp)
     ) {
         Row(
             modifier = Modifier.padding(8.dp),
