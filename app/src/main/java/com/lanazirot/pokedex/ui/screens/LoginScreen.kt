@@ -22,7 +22,7 @@ fun LoginScreen() {
             .paint(
                 painter = painterResource(id = R.drawable.app_background),
                 contentScale = ContentScale.Crop,
-                alpha = 0.5f
+                alpha = 0.7f
             )
     ) {
         Column(
