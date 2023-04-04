@@ -33,16 +33,15 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
                     gameUIState = GameUIState.PokemonFetched(it.answers.first { it.isCorrect }.pokemon)
                 )
             }
+            _timer?.cancel()
+            restartTimer()
         }
 
-        _timer?.cancel()
-        restartTimer()
     }
 
 
     fun nextPokemon() {
-        _gameState.value =
-            _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon, remainingTime = 5)
+        _gameState.value = _gameState.value.copy(gameUIState = GameUIState.FetchingPokemon, remainingTime = 5)
         viewModelScope.launch {
             delay(1000)
             fetchPokemon().collect { it ->
@@ -53,9 +52,9 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
                     remainingTime = 5
                 )
             }
+            _timer?.cancel()
+            restartTimer()
         }
-        _timer?.cancel()
-        restartTimer()
     }
 
     fun guessPokemon(answer: Answer) {
@@ -117,10 +116,9 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
     }
 
     private fun restartTimer() {
-        _timer = object : CountDownTimer((_gameState.value.remainingTime * 1000).toLong(), 1000) {
+        _timer = object : CountDownTimer(6000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                _gameState.value =
-                    _gameState.value.copy(remainingTime = _gameState.value.remainingTime - 1)
+                _gameState.value = _gameState.value.copy(remainingTime = (millisUntilFinished / 1000).toInt())
             }
 
             override fun onFinish() {
@@ -139,6 +137,7 @@ class GameViewModel @Inject constructor(private val userManager: IUserManager) :
                 }
             }
         }.start()
+
     }
 
     private suspend fun fetchPokemon() = flow {
