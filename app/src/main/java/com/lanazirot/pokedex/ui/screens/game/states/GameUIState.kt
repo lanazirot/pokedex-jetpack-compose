@@ -1,6 +1,6 @@
 package com.lanazirot.pokedex.ui.screens.game.states
 
-import com.lanazirot.pokedex.domain.models.Pokemon
+import com.lanazirot.pokedex.domain.models.game.Pokemon
 
 sealed class GameUIState {
     object Loading : GameUIState()

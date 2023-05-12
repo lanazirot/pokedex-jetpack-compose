@@ -4,9 +4,9 @@ import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lanazirot.pokedex.domain.constants.GameConstants.SCORE_RATE
-import com.lanazirot.pokedex.domain.interfaces.IUserManager
-import com.lanazirot.pokedex.domain.models.Answer
-import com.lanazirot.pokedex.domain.models.GameProgress
+import com.lanazirot.pokedex.domain.interfaces.game.IUserManager
+import com.lanazirot.pokedex.domain.models.game.Answer
+import com.lanazirot.pokedex.domain.models.game.GameProgress
 import com.lanazirot.pokedex.ui.screens.game.states.AnswerState
 import com.lanazirot.pokedex.ui.screens.game.states.GameState
 import com.lanazirot.pokedex.ui.screens.game.states.GameUIState

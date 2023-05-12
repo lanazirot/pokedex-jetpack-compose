@@ -1,7 +1,7 @@
 package com.lanazirot.pokedex.ui.navigation.navgraphbuilders.navtypes
 
 import com.google.gson.Gson
-import com.lanazirot.pokedex.domain.models.GameProgressResult
+import com.lanazirot.pokedex.domain.models.game.GameProgressResult
 import com.lanazirot.pokedex.ui.navigation.JsonNavType
 
 class ProfileArgType : JsonNavType<GameProgressResult>() {

@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.lanazirot.pokedex.domain.models.GameProgress
+import com.lanazirot.pokedex.domain.models.game.GameProgress
 import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonCard
 
 @Composable

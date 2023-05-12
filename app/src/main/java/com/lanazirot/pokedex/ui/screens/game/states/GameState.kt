@@ -1,7 +1,7 @@
 package com.lanazirot.pokedex.ui.screens.game.states
 
-import com.lanazirot.pokedex.domain.models.GameProgressResult
-import com.lanazirot.pokedex.domain.models.PokemonGuessable
+import com.lanazirot.pokedex.domain.models.game.GameProgressResult
+import com.lanazirot.pokedex.domain.models.game.PokemonGuessable
 
 data class GameState(
     val score: Int = 0,

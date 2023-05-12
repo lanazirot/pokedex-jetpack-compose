@@ -3,9 +3,9 @@ package com.lanazirot.pokedex.ui.screens.user
 
 import androidx.lifecycle.ViewModel
 import com.lanazirot.pokedex.domain.constants.GameConstants
-import com.lanazirot.pokedex.domain.interfaces.IUserManager
-import com.lanazirot.pokedex.domain.models.Pokemon
-import com.lanazirot.pokedex.domain.models.Score
+import com.lanazirot.pokedex.domain.interfaces.game.IUserManager
+import com.lanazirot.pokedex.domain.models.game.Pokemon
+import com.lanazirot.pokedex.domain.models.game.Score
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "866657722835",
+    "project_id": "pokedex-compose",
+    "storage_bucket": "pokedex-compose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866657722835:android:9f26050b02cdd9ed134f26",
+        "android_client_info": {
+          "package_name": "com.lanazirot.pokedex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866657722835-ok7dedmq10djkfsnni2994n0p4qla49h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lanazirot.pokedex",
+            "certificate_hash": "1803046babbf905b122449d42cc79bc8b09742e2"
+          }
+        },
+        {
+          "client_id": "866657722835-heavebie9kff7rt2mklhveb06kqrejkt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIzfIVwKOhHQK3fRobqe3b_qcXXaCOqfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866657722835-gnuak9fvki4gaiehe8rmrgaee5cru8cq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

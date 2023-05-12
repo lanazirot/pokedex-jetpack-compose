@@ -1,9 +1,8 @@
 package com.lanazirot.pokedex.domain.services
 
-import android.content.Context
-import com.lanazirot.pokedex.domain.interfaces.IPokemonRepository
-import com.lanazirot.pokedex.domain.interfaces.IPokemonService
-import com.lanazirot.pokedex.domain.models.PokemonMapped
+import com.lanazirot.pokedex.domain.interfaces.game.IPokemonRepository
+import com.lanazirot.pokedex.domain.interfaces.game.IPokemonService
+import com.lanazirot.pokedex.domain.models.game.PokemonMapped
 import javax.inject.Inject
 
 class PokemonService @Inject constructor(
