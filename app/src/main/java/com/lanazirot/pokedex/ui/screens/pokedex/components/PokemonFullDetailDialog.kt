@@ -1,6 +1,5 @@
 package com.lanazirot.pokedex.ui.screens.pokedex.components
 
-import android.graphics.Color.rgb
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
-import com.lanazirot.pokedex.domain.models.Pokemon
+import com.lanazirot.pokedex.domain.models.game.Pokemon
 import com.lanazirot.pokedex.ui.theme.*
 
 @Composable

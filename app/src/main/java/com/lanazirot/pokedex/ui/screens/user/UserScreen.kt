@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.domain.enums.PokemonType
-import com.lanazirot.pokedex.domain.models.Score
+import com.lanazirot.pokedex.domain.models.game.Score
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
 import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonCountTypeLabel
 import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonHeaderLabel

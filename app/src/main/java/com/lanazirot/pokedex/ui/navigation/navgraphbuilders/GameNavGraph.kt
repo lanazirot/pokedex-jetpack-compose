@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.gson.Gson
-import com.lanazirot.pokedex.domain.models.GameProgressResult
+import com.lanazirot.pokedex.domain.models.game.GameProgressResult
 import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.navtypes.ProfileArgType
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.screens.game.GameScreen

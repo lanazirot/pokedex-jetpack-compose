@@ -1,6 +1,6 @@
 package com.lanazirot.pokedex.ui.screens.game.states
 
-import com.lanazirot.pokedex.domain.models.Answer
+import com.lanazirot.pokedex.domain.models.game.Answer
 
 
 sealed class AnswerState {

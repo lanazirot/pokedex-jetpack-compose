@@ -3,7 +3,7 @@ package com.lanazirot.pokedex.ui.screens.pokedex.components
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
-import com.lanazirot.pokedex.domain.models.Pokemon
+import com.lanazirot.pokedex.domain.models.game.Pokemon
 
 @Composable
 fun PokedexList(allPokemon: List<Pokemon>, pokemonFounded: List<Pokemon>) {

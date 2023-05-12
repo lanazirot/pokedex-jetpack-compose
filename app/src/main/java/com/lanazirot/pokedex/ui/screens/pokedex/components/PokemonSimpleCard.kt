@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.lanazirot.pokedex.R
-import com.lanazirot.pokedex.domain.models.Pokemon
+import com.lanazirot.pokedex.domain.models.game.Pokemon
 
 @Composable
 fun PokemonSimpleCard(pokemon: Pokemon, isVisible: Boolean = false) {
