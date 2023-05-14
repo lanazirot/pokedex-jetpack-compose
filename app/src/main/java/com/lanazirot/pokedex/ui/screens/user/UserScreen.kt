@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.domain.enums.PokemonType
 import com.lanazirot.pokedex.domain.models.game.Score
@@ -37,6 +39,8 @@ fun UserScreen() {
     val pokemonTypeSize = pokemonTypes.size
     var rowCount = pokemonTypeSize / columnCount
     if(pokemonTypeSize % columnCount != 0) rowCount += 1
+
+    val userViewModel: UserViewModel = hiltViewModel()
 
     BoxWithConstraints {
         LazyColumn(
@@ -91,6 +95,13 @@ fun UserScreen() {
                     Text(text = "Numero de partidas jugadas: " + currentUser.attemptsCount(), fontSize = 13.sp)
                     Spacer(modifier = Modifier.height(15.dp))
                     ProgressBarFromNumber(progress = currentUser.getPokedexProgress())
+                    Button(
+                        onClick = {
+                            userViewModel.logout()
+                        }
+                    ) {
+                        Text(text = "Cerrar sesión")
+                    }
                 }
             }
         )

@@ -9,6 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.lanazirot.pokedex.domain.interfaces.auth.IAuthService
 import com.lanazirot.pokedex.domain.models.common.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +19,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val authService: IAuthService, val oneTapClient: SignInClient) : ViewModel() {
+class LoginViewModel @Inject constructor(private val authService: IAuthService, val oneTapClient: SignInClient,
+//val firebaseAuth: FirebaseAuth
+                                         ) : ViewModel() {
     val userAuthenticated = authService.isUserAuthenticatedInFirebase
 
     var oneTapSignInResult by mutableStateOf<Response<BeginSignInResult>>(Response.Success(null))
@@ -35,6 +40,28 @@ class LoginViewModel @Inject constructor(private val authService: IAuthService, 
 
     fun firebaseSignInWithGoogle(credentials: AuthCredential) = viewModelScope.launch {
         firebaseSignInResult = authService.firebaseSignInWithGoogle(credentials)
+    }
+
+
+    fun signInWithGoogle(credential: AuthCredential, toHome: () -> Unit) {
+        try {
+            Firebase.auth.signInWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        toHome()
+                        //TODO Guardar token global, generar token Stream
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    throw exception
+                }
+        } catch (e: Exception) {
+            Log.d("LoginViewModel", e.toString())
+        }
+    }
+
+    fun logout() {
+        Firebase.auth.signOut()
     }
 
 }
