@@ -1,7 +1,14 @@
 package com.lanazirot.pokedex.ui.screens.user
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.lanazirot.pokedex.domain.constants.GameConstants
 import com.lanazirot.pokedex.domain.interfaces.game.IUserManager
 import com.lanazirot.pokedex.domain.models.game.Pokemon
@@ -10,7 +17,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(private val userManager: IUserManager) :ViewModel() {
+class UserViewModel @Inject constructor(private val userManager: IUserManager,
+private val googleSignInClient: GoogleSignInClient,
+                                        ) :ViewModel() {
 
     /**
      * Agrega un pokemon a la lista de pokemon encontrados por el usuario
@@ -99,6 +108,16 @@ class UserViewModel @Inject constructor(private val userManager: IUserManager) :
 
     fun isPokedexCompleted(): Boolean {
         return userManager.isPokedexCompleted()
+    }
+
+    fun logout(){
+        googleSignInClient.revokeAccess().addOnCompleteListener {
+//            FirebaseAuth.getInstance().signOut()
+//        Log.d("UserViewModel", "logousddjsakjhdsahdkjashdkjhsakdjhasdasdast")
+            Firebase.auth.signOut()
+//            Log.d("UserViewModel", "logousddjsakjhdsahdkjashdkjhsakdjhasdasdast222222222")
+        }
+//        Log.d("UserViewModel", "logousddjsakjhdsahdkjashdkjhsakdjhasdasdast34434343434")
     }
 }
 
