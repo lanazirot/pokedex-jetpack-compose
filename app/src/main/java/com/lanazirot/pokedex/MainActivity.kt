@@ -44,11 +44,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val userViewModel: UserViewModel by viewModels()
-    private val loginViewModel: LoginViewModel by viewModels()
-
-//    private lateinit var oneTapClient: SignInClient
-//    private lateinit var signInRequest: BeginSignInRequest
-//    private lateinit var navController: NavHostController
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,8 +79,8 @@ class MainActivity : ComponentActivity() {
                         ) {
                             Scaffold(
                                 bottomBar = { if (bottomBarVisibility.value) BottomNavBar() },
-                                floatingActionButtonPosition = FabPosition.Center,
-                                isFloatingActionButtonDocked = true,
+                                floatingActionButtonPosition = FabPosition.End,
+                                isFloatingActionButtonDocked = false,
                                 floatingActionButton = { if (bottomBarVisibility.value) NavigationCenterButton() },
                                 content = {
                                     Column(
@@ -103,9 +98,6 @@ class MainActivity : ComponentActivity() {
             }
         }
         hideSystemUI()
-//        if(loginViewModel.userAuthenticated) {
-//            navController.navigate(AppRoutes.Play.Game)
-//        }
     }
 
     private fun hideSystemUI() {

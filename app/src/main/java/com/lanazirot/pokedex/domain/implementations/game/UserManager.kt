@@ -1,15 +1,26 @@
 package com.lanazirot.pokedex.domain.implementations.game
 
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.lanazirot.pokedex.domain.constants.GameConstants
 import com.lanazirot.pokedex.domain.interfaces.game.IPokemonLocalRepository
 import com.lanazirot.pokedex.domain.interfaces.game.IUserManager
-import com.lanazirot.pokedex.domain.models.game.*
+import com.lanazirot.pokedex.domain.models.game.Answer
+import com.lanazirot.pokedex.domain.models.game.Pokemon
+import com.lanazirot.pokedex.domain.models.game.PokemonGuessable
+import com.lanazirot.pokedex.domain.models.game.Score
 import com.lanazirot.pokedex.domain.models.user.User
+import kotlinx.coroutines.tasks.await
 import java.util.*
 import javax.inject.Inject
 
-class UserManager @Inject constructor(private val pokemonLocalRepository: IPokemonLocalRepository) :
-    IUserManager {
+class UserManager @Inject constructor(
+    private val pokemonLocalRepository: IPokemonLocalRepository,
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseAuth: FirebaseAuth
+) : IUserManager {
+
     private val totalPokemon = GameConstants.TOTAL_POKEMON
     private var currentUser: User? = null
 
@@ -41,50 +52,63 @@ class UserManager @Inject constructor(private val pokemonLocalRepository: IPokem
         currentUser = User()
     }
 
-    override fun setCurrentUser(user: User) {
-        currentUser = user
-    }
-
-    override fun getCurrentUser(): User? {
-        return currentUser
-    }
-
-    override fun addSeenPokemon(pokemon: Pokemon) {
-        currentUser?.foundPokemonList?.add(pokemon)
-        if(currentUser?.foundPokemonList?.size == totalPokemon) {
-            currentUser?.pokedexCompleted = true
+    override fun onLateInit() {
+        val authenticatedUser = firebaseAuth.currentUser
+        if(authenticatedUser != null) {
+            firebaseFirestore.collection("users").document(authenticatedUser?.email!!).get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        currentUser = document.toObject(User::class.java)
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.d("UserManager", "Error getting documents: ", exception)
+                }
         }
     }
 
-    override fun addToScoreLog(score: Int) {
+    override fun addSeenPokemon(pokemon: Pokemon) {
+        currentUser?.currentUserData?.foundPokemonList?.add(pokemon)
+        if (currentUser?.currentUserData?.foundPokemonList?.size == totalPokemon) {
+            currentUser?.currentUserData?.pokedexCompleted = true
+        }
+        //Update user data in firestore
+        firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!)
+    }
+
+    override suspend fun addToScoreLog(score: Int) {
         val myScore = Score(score = score, date = Date())
-        currentUser?.scoreLog?.add(myScore)
+        currentUser?.currentUserData?.scoreLog?.add(myScore)
+        //Update user data in firestore
+        firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!).await()
     }
 
     override fun getTopThreeScores(): List<Score> {
-        return currentUser?.scoreLog?.sortedByDescending { it.score }?.take(3) ?: listOf()
+        return currentUser?.currentUserData?.scoreLog?.sortedByDescending { it.score }?.take(3)
+            ?: listOf()
     }
 
     override fun getPokemonFound(): List<Pokemon> {
-        return currentUser?.foundPokemonList?.toList()!!
+        return currentUser?.currentUserData?.foundPokemonList?.toList()!!
     }
 
     override fun pokemonFoundByTypeCount(type: String): Int {
-        return currentUser?.foundPokemonList?.map { pokemon: Pokemon ->
-            pokemon.type1.uppercase() == type || pokemon.type2.uppercase() == type }?.count {
-            it } ?: 0
+        return currentUser?.currentUserData?.foundPokemonList?.map { pokemon: Pokemon ->
+            pokemon.type1.uppercase() == type || pokemon.type2.uppercase() == type
+        }?.count {
+            it
+        } ?: 0
     }
 
     override fun pokemonLegendaryFoundCount(): Int {
-        return currentUser?.foundPokemonList?.map {
-                pokemon: Pokemon ->
-            pokemon.legendary == "True" }?.count {
+        return currentUser?.currentUserData?.foundPokemonList?.map { pokemon: Pokemon ->
+            pokemon.legendary == "True"
+        }?.count {
             it
         } ?: 0
     }
 
     override fun attemptsCount(): Int {
-        return currentUser?.scoreLog?.size ?: 0
+        return currentUser?.currentUserData?.scoreLog?.size ?: 0
     }
 
     override fun getPokedexProgress(): Int {
@@ -101,6 +125,6 @@ class UserManager @Inject constructor(private val pokemonLocalRepository: IPokem
     }
 
     override fun isPokedexCompleted(): Boolean {
-        return currentUser?.pokedexCompleted ?: false
+        return currentUser?.currentUserData?.pokedexCompleted ?: false
     }
 }

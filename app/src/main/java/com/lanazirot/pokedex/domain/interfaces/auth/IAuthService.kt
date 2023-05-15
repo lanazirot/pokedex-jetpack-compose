@@ -8,4 +8,5 @@ interface IAuthService {
     val isUserAuthenticatedInFirebase: Boolean
     suspend fun oneTapSignInWithGoogle(): Response<BeginSignInResult>
     suspend fun firebaseSignInWithGoogle(googleCredential: AuthCredential): Response<Boolean>
+    suspend fun checkIfUserIsInFirestore(): Response<Boolean>
 }

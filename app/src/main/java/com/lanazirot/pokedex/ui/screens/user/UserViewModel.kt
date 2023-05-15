@@ -1,12 +1,8 @@
 package com.lanazirot.pokedex.ui.screens.user
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lanazirot.pokedex.domain.constants.GameConstants
@@ -17,25 +13,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(private val userManager: IUserManager,
-private val googleSignInClient: GoogleSignInClient,
-                                        ) :ViewModel() {
+class UserViewModel @Inject constructor(
+    private val userManager: IUserManager,
+    private val googleSignInClient: GoogleSignInClient
+) : ViewModel() {
 
-    /**
-     * Agrega un pokemon a la lista de pokemon encontrados por el usuario
-     * @param pokemon pokemon encontrado
-     */
-    fun addSeenPokemon(pokemon: Pokemon) {
-        userManager.addSeenPokemon(pokemon)
-    }
-
-    /**
-     * Agrega un score a la lista de scores del usuario. Asigna la fecha actual a la puntuacion
-     * @param score score obtenido
-     */
-    fun updateScoreLog(score: Int) {
-        userManager.addToScoreLog(score)
-    }
+    init{  userManager.onLateInit() }
 
     /**
      * Devuelve los tres socres mas altos obtenidos por el usuario
@@ -98,9 +81,6 @@ private val googleSignInClient: GoogleSignInClient,
         return userManager.getPokedexProgress()
     }
 
-    suspend fun getPokemonNotFound(): MutableList<Pokemon> {
-        return userManager.getPokemonNotFound().toMutableList()
-    }
 
     suspend fun getAllPokemonList(): List<Pokemon> {
         return userManager.getAllPokemonList()
@@ -110,14 +90,15 @@ private val googleSignInClient: GoogleSignInClient,
         return userManager.isPokedexCompleted()
     }
 
-    fun logout(){
-        googleSignInClient.revokeAccess().addOnCompleteListener {
-//            FirebaseAuth.getInstance().signOut()
-//        Log.d("UserViewModel", "logousddjsakjhdsahdkjashdkjhsakdjhasdasdast")
-            Firebase.auth.signOut()
-//            Log.d("UserViewModel", "logousddjsakjhdsahdkjashdkjhsakdjhasdasdast222222222")
+    fun logout(onLogoutSuccess: (Boolean, java.lang.Exception?) -> Unit) {
+        try {
+            googleSignInClient.revokeAccess().addOnCompleteListener {
+                Firebase.auth.signOut()
+                onLogoutSuccess(true, null)
+            }
+        } catch (e: Exception) {
+            onLogoutSuccess(false, e)
         }
-//        Log.d("UserViewModel", "logousddjsakjhdsahdkjashdkjhsakdjhasdasdast34434343434")
     }
 }
 

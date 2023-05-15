@@ -2,10 +2,7 @@ package com.lanazirot.pokedex.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.GameNavGraph
-import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.LoginNavGraph
-import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.PokedexNavGraph
-import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.UserNavGraph
+import com.lanazirot.pokedex.ui.navigation.navgraphbuilders.*
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.AppProvider
 
@@ -18,5 +15,6 @@ fun AppNavGraph(globalProvider: AppProvider) {
         UserNavGraph()
         PokedexNavGraph()
         GameNavGraph()
+        LeaderboardNavGraph()
     }
 }
