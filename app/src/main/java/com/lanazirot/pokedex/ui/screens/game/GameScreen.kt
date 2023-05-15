@@ -1,12 +1,12 @@
 package com.lanazirot.pokedex.ui.screens.game
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -14,12 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import coil.compose.rememberAsyncImagePainter
 import com.ehsanmsz.mszprogressindicator.progressindicator.BallPulseSyncProgressIndicator
 import com.lanazirot.pokedex.R
@@ -32,6 +36,22 @@ import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonHeaderLabel
 import com.lanazirot.pokedex.ui.theme.Pokemon
 import com.lanazirot.pokedex.ui.theme.pokemonBlue
 
+
+@Composable
+private fun ComposableLifecycle(
+    lifecycle: LifecycleOwner = LocalLifecycleOwner.current,
+    onEvent: (LifecycleOwner, Lifecycle.Event) -> Unit
+) {
+    DisposableEffect(lifecycle) {
+        val observer = LifecycleEventObserver { _, event ->
+            onEvent(lifecycle, event)
+        }
+        lifecycle.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.lifecycle.removeObserver(observer)
+        }
+    }
+}
 
 @Composable
 fun GameScreen() {
@@ -55,6 +75,8 @@ fun GameScreen() {
             }
         }
     }
+
+
 
     when (gameState.gameUIState) {
         is GameUIState.Loading, GameUIState.FetchingPokemon -> {
@@ -104,10 +126,8 @@ fun GameScreen() {
                 }
                 Box(
                     modifier = Modifier
-                        //.size(430.dp)
                         .fillMaxWidth(), contentAlignment = Alignment.Center
                 ) {
-
 
                     Image(
                         painter = painterResource(id = R.drawable.fondo),
@@ -295,10 +315,6 @@ fun GameScreen() {
                 }
             }
         }
-        else -> {
-            Log.d("GameScreen", "GameScreen ${gameState.gameUIState}")
-            BallPulseSyncProgressIndicator()
-        }
     }
 }
 
@@ -314,7 +330,6 @@ private fun paintButtonIfCorrect(answer: AnswerState, pokemonFromPressedButton: 
 @Composable
 private fun Vidas(vidas: Int) {
     Row(modifier = Modifier.width(120.dp), horizontalArrangement = Arrangement.Start) {
-        //Por cada vida, dibujar un corazon
         for (i in 0 until vidas) {
             Image(painter = painterResource(id = R.drawable.corazon), contentDescription = "")
         }

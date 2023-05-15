@@ -43,7 +43,6 @@ fun LeaderboardCardOtherPlace(leader: Leaderboard, index: Int) {
 fun LeaderboardCardBase(leader: Leaderboard, place: String, fontSize: TextUnit = 10.sp) {
     Row {
         Column(
-            modifier = androidx.compose.ui.Modifier.padding(8.dp),
             verticalArrangement = Arrangement.SpaceEvenly
         ){
             Text(text = place, fontSize = fontSize)

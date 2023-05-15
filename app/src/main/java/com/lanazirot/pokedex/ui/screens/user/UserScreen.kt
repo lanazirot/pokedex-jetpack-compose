@@ -12,11 +12,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bumptech.glide.Glide
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.domain.enums.PokemonType
 import com.lanazirot.pokedex.domain.models.game.Score
@@ -34,6 +38,8 @@ import com.touchlane.gridpad.GridPadCells
 import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalGlideComposeApi::class)
+@SuppressLint("CheckResult")
 @Composable
 fun UserScreen() {
     val currentUser = GlobalUserProvider.current.currentUser
@@ -58,6 +64,11 @@ fun UserScreen() {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         PokemonHeaderLabel(text =" Estadisticas")
+                    }
+                    Row( modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        GlideImage(model = userViewModel.getUserImage(), contentDescription = "User image", modifier = Modifier.size(100.dp))
                     }
                     if(currentUser.isPokedexCompleted()){
                         Image(
@@ -98,7 +109,7 @@ fun UserScreen() {
                         content = currentUser.pokemonLegendaryFoundCount()
                     )
                     Spacer(modifier = Modifier.height(15.dp))
-                    Text(text = "Numero de partidas jugadas: " + currentUser.attemptsCount(), fontSize = 13.sp)
+                    Text(text = "${currentUser.attemptsCount()} partidas", fontSize = 13.sp)
                     Spacer(modifier = Modifier.height(15.dp))
                     ProgressBarFromNumber(progress = currentUser.getPokedexProgress())
                     Button(
@@ -117,6 +128,7 @@ fun UserScreen() {
                             )
                         }
                     ) {
+                        Spacer(modifier = Modifier.height(10.dp))
                         Text(text = "Sign out")
                     }
                 }
