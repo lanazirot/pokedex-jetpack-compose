@@ -1,6 +1,7 @@
 package com.lanazirot.pokedex.ui.screens.user
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.domain.enums.PokemonType
 import com.lanazirot.pokedex.domain.models.game.Score
+import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
+import com.lanazirot.pokedex.ui.providers.GlobalProvider
 import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
 import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonCountTypeLabel
 import com.lanazirot.pokedex.ui.screens.pokedex.components.PokemonHeaderLabel
@@ -34,13 +37,16 @@ import java.util.*
 @Composable
 fun UserScreen() {
     val currentUser = GlobalUserProvider.current.currentUser
+    val navController = GlobalProvider.current.navigation
+    val userViewModel: UserViewModel = hiltViewModel()
+
     val pokemonTypes = enumValues<PokemonType>()
     val columnCount = 3
     val pokemonTypeSize = pokemonTypes.size
     var rowCount = pokemonTypeSize / columnCount
     if(pokemonTypeSize % columnCount != 0) rowCount += 1
 
-    val userViewModel: UserViewModel = hiltViewModel()
+
 
     BoxWithConstraints {
         LazyColumn(
@@ -97,10 +103,21 @@ fun UserScreen() {
                     ProgressBarFromNumber(progress = currentUser.getPokedexProgress())
                     Button(
                         onClick = {
-                            userViewModel.logout()
+                            userViewModel.logout(
+                                onLogoutSuccess = { success, exception ->
+                                    if(exception != null)  Log.e("UserScreen", exception.message.toString())
+                                    if(success){
+                                        navController.navigate(AppRoutes.Login.Login){
+                                            popUpTo(AppRoutes.Login.Login){
+                                                inclusive = true
+                                            }
+                                        }
+                                    }
+                                }
+                            )
                         }
                     ) {
-                        Text(text = "Cerrar sesión")
+                        Text(text = "Sign out")
                     }
                 }
             }
@@ -115,7 +132,7 @@ fun CountPokemonByType(header: String, content: Int) {
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = header + " ",
+            text = "$header ",
             fontSize = 13.sp,
             fontWeight = FontWeight.Normal,
             color = pokemonBlack
@@ -140,9 +157,7 @@ fun ScoreText(score: Score) {
 
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun DateFormatted(date: Date) {
-    Text(SimpleDateFormat("dd/MM/yyyy").format(date))
-}
+fun DateFormatted(date: Date) = Text(SimpleDateFormat("dd/MM/yyyy").format(date))
 
 @Composable
 fun ProgressBarFromNumber(progress: Int) {
@@ -151,7 +166,7 @@ fun ProgressBarFromNumber(progress: Int) {
             .fillMaxWidth()
     , horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Progreso: " + progress + "%", color = pokemonRed)
+        Text(text = "Progreso: $progress%", color = pokemonRed)
         LinearProgressIndicator(
             progress = progress.toFloat() / 100,
         )

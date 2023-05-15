@@ -6,6 +6,10 @@ class AppRoutes {
         const val PokemonList = "pokemon_list"
     }
 
+    object Leaderboard {
+        const val Leaderboard = "leaderboard"
+    }
+
     object Play {
         const val Game = "game"
         const val GameResult = "game_result/{gameProgressResult}"

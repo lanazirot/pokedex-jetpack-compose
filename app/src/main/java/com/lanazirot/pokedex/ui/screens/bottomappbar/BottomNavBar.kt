@@ -37,6 +37,7 @@ fun NavBar() {
     val navItems = listOf(
         BottomNavItem.User,
         BottomNavItem.Pokedex,
+        BottomNavItem.Leaderboard
     )
 
     val navBack by navController.currentBackStackEntryAsState()
@@ -45,7 +46,6 @@ fun NavBar() {
         modifier = Modifier
             .padding(12.dp, 0.dp, 12.dp, 0.dp)
             .height(100.dp),
-        //backgroundColor = Color.White,
         elevation = 0.dp
     ) {
         navItems.forEach{

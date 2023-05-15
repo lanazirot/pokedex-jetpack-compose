@@ -3,14 +3,12 @@ package com.lanazirot.pokedex.domain.interfaces.game
 import com.lanazirot.pokedex.domain.models.game.Pokemon
 import com.lanazirot.pokedex.domain.models.game.Score
 import com.lanazirot.pokedex.domain.models.game.PokemonGuessable
-import com.lanazirot.pokedex.domain.models.user.User
+import com.lanazirot.pokedex.domain.models.user.UserData
 
 interface IUserManager {
     suspend fun getRandomUnseenPokemon(): PokemonGuessable
-    fun setCurrentUser(user: User)
-    fun getCurrentUser(): User?
     fun addSeenPokemon(pokemon: Pokemon)
-    fun addToScoreLog(score: Int)
+    suspend fun addToScoreLog(score: Int)
     fun getTopThreeScores() : List<Score>
     fun getPokemonFound() : List<Pokemon>
     fun pokemonFoundByTypeCount(type: String): Int
@@ -20,4 +18,5 @@ interface IUserManager {
     fun getPokedexProgress() :Int
     suspend fun getAllPokemonList(): List<Pokemon>
     fun isPokedexCompleted() : Boolean
+    fun onLateInit()
 }
