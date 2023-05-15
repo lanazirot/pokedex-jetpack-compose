@@ -39,7 +39,7 @@ fun LeaderboardList() {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        PokemonHeaderLabel(text = " Leaderboard mundial")
+                        PokemonHeaderLabel(text = " Leaderboard")
                     }
                 }
                 itemsIndexed(leaderboardState.value.leaderBoardList) { index, leader ->

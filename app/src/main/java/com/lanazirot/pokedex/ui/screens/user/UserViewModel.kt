@@ -90,6 +90,10 @@ class UserViewModel @Inject constructor(
         return userManager.isPokedexCompleted()
     }
 
+    fun getUserImage(): String {
+        return userManager.getUser().photoUrl
+    }
+
     fun logout(onLogoutSuccess: (Boolean, java.lang.Exception?) -> Unit) {
         try {
             googleSignInClient.revokeAccess().addOnCompleteListener {

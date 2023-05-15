@@ -81,6 +81,7 @@ dependencies {
     implementation 'com.ehsanmsz:msz-progress-indicator:0.2.0'
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
 
 }
 

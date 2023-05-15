@@ -10,6 +10,7 @@ import com.lanazirot.pokedex.domain.models.game.Answer
 import com.lanazirot.pokedex.domain.models.game.Pokemon
 import com.lanazirot.pokedex.domain.models.game.PokemonGuessable
 import com.lanazirot.pokedex.domain.models.game.Score
+import com.lanazirot.pokedex.domain.models.leaderboard.Leaderboard
 import com.lanazirot.pokedex.domain.models.user.User
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -52,6 +53,10 @@ class UserManager @Inject constructor(
         currentUser = User()
     }
 
+    override fun getUser(): User {
+        return currentUser!!
+    }
+
     override fun onLateInit() {
         val authenticatedUser = firebaseAuth.currentUser
         if(authenticatedUser != null) {
@@ -66,25 +71,41 @@ class UserManager @Inject constructor(
         }
     }
 
+    override suspend fun addAttempt() {
+        currentUser?.currentUserData?.attempts = currentUser?.currentUserData?.attempts?.plus(1)!!
+        firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!).await()
+    }
+
     override fun addSeenPokemon(pokemon: Pokemon) {
         currentUser?.currentUserData?.foundPokemonList?.add(pokemon)
         if (currentUser?.currentUserData?.foundPokemonList?.size == totalPokemon) {
             currentUser?.currentUserData?.pokedexCompleted = true
+            //If user has completed the pokedex, add to the leaderboard collection
+            val leaderboard = Leaderboard.fromUser(currentUser!!)
+            firebaseFirestore.collection("leaderboard").add(leaderboard)
         }
-        //Update user data in firestore
         firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!)
     }
 
-    override suspend fun addToScoreLog(score: Int) {
+    override suspend fun addToScoreLog(score: Int, elapsedTime: Long) {
         val myScore = Score(score = score, date = Date())
         currentUser?.currentUserData?.scoreLog?.add(myScore)
-        //Update user data in firestore
+        currentUser?.currentUserData?.playedTime = currentUser?.currentUserData?.playedTime?.plus(elapsedTime)!!
+        firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!).await()
+    }
+
+    override suspend fun addToPlayedTime(elapsedTime: Long){
+        currentUser?.currentUserData?.playedTime = currentUser?.currentUserData?.playedTime?.plus(elapsedTime)!!
+        firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!).await()
+    }
+
+    override suspend fun removeFromPlayedTime(elapsedTime: Long) {
+        currentUser?.currentUserData?.playedTime = currentUser?.currentUserData?.playedTime?.minus(elapsedTime)!!
         firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!).await()
     }
 
     override fun getTopThreeScores(): List<Score> {
-        return currentUser?.currentUserData?.scoreLog?.sortedByDescending { it.score }?.take(3)
-            ?: listOf()
+        return currentUser?.currentUserData?.scoreLog?.sortedByDescending { it.score }?.take(3) ?: listOf()
     }
 
     override fun getPokemonFound(): List<Pokemon> {
@@ -102,9 +123,7 @@ class UserManager @Inject constructor(
     override fun pokemonLegendaryFoundCount(): Int {
         return currentUser?.currentUserData?.foundPokemonList?.map { pokemon: Pokemon ->
             pokemon.legendary == "True"
-        }?.count {
-            it
-        } ?: 0
+        }?.count { it } ?: 0
     }
 
     override fun attemptsCount(): Int {

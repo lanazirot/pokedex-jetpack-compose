@@ -12,5 +12,6 @@ data class GameState(
     val gameUIState: GameUIState = GameUIState.Loading,
     val answer: AnswerState = AnswerState.None,
     val pokemonResultList: List<PokemonGuessable> = listOf(),
-    val gameProgressResult: GameProgressResult = GameProgressResult()
+    val gameProgressResult: GameProgressResult = GameProgressResult(),
+    var elapsedTimeInSeconds: Long = 0,
 )
