@@ -9,11 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lanazirot.pokedex.domain.models.game.GameProgressResult
 import com.lanazirot.pokedex.ui.common.components.BlackButtonWithPokeball
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
+import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
 import com.lanazirot.pokedex.ui.screens.game.resultscreen.components.GameResultCard
 import com.lanazirot.pokedex.ui.theme.pokemonGold
 
@@ -21,6 +23,8 @@ import com.lanazirot.pokedex.ui.theme.pokemonGold
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun GameResultScreen(gameProgressResult: GameProgressResult) {
+    val currentUser = GlobalUserProvider.current.currentUser
+
     BoxWithConstraints {
         Scaffold(
             topBar = {
@@ -52,11 +56,20 @@ fun GameResultScreen(gameProgressResult: GameProgressResult) {
                 )
             },
             bottomBar = {
-                BlackButtonWithPokeball(
-                    text = "Inicio",
-                    route = AppRoutes.User.Profile,
-                    popUpTo = AppRoutes.Play.GameResult
-                )
+                if(currentUser.isPokedexCompleted()) {
+                    BlackButtonWithPokeball(
+                        text = "Convertirse en maestro pokemon!",
+                        route = AppRoutes.Play.Completed,
+                        popUpTo = AppRoutes.Play.GameResult,
+                        color = Color.Red
+                    )
+                } else {
+                    BlackButtonWithPokeball(
+                        text = "Inicio",
+                        route = AppRoutes.User.Profile,
+                        popUpTo = AppRoutes.Play.GameResult
+                    )
+                }
             }
         )
     }

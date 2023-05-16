@@ -1,9 +1,7 @@
 package com.lanazirot.pokedex
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -16,20 +14,12 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
 import com.lanazirot.pokedex.ui.navigation.AppNavGraph
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.AppProvider
@@ -38,7 +28,6 @@ import com.lanazirot.pokedex.ui.providers.GlobalUserProvider
 import com.lanazirot.pokedex.ui.providers.UserProvider
 import com.lanazirot.pokedex.ui.screens.bottomappbar.BottomNavBar
 import com.lanazirot.pokedex.ui.screens.bottomappbar.NavigationCenterButton
-import com.lanazirot.pokedex.ui.screens.login.LoginViewModel
 import com.lanazirot.pokedex.ui.screens.user.UserViewModel
 import com.lanazirot.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,11 +45,11 @@ class MainActivity : ComponentActivity() {
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val navController = rememberNavController()
 
-
             val routesWithoutNavBarBottom = listOf(
                 AppRoutes.Login.Login,
                 AppRoutes.Play.Game,
                 AppRoutes.Play.GameResult,
+                AppRoutes.Play.Completed
             )
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
