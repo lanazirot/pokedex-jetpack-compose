@@ -9,7 +9,8 @@ data class Leaderboard(
     val score: Int = 0,
     val attempts: Int = 0,
     val time: Long = 0,
-    val date: String = ""
+    val date: String = "",
+    val country: String = ""
 ){
     fun elapsedTime(): String = elapsedTime(time)
 
@@ -22,7 +23,8 @@ data class Leaderboard(
                 score = user.currentUserData.scoreLog.maxByOrNull { it.score }!!.score,
                 attempts = user.currentUserData.attempts,
                 time = user.currentUserData.playedTime,
-                date = formatter.format(currentDate)
+                date = formatter.format(currentDate),
+                country = user.country
             )
         }
     }

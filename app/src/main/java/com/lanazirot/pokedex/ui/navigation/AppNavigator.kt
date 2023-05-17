@@ -16,5 +16,6 @@ fun AppNavGraph(globalProvider: AppProvider) {
         PokedexNavGraph()
         GameNavGraph()
         LeaderboardNavGraph()
+        CompletedNavGraph()
     }
 }

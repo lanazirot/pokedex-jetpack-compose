@@ -13,6 +13,7 @@ class AppRoutes {
     object Play {
         const val Game = "game"
         const val GameResult = "game_result/{gameProgressResult}"
+        const val Completed = "completed"
         fun gameResult(gameProgressResult: String) = "game_result/$gameProgressResult"
     }
 
@@ -22,6 +23,9 @@ class AppRoutes {
 
     object Login {
         const val Login = "login"
+    }
+
+    object Completed {
     }
 
 }

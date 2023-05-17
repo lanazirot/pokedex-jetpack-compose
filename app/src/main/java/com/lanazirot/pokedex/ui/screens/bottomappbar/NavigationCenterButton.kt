@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.lanazirot.pokedex.R
 import com.lanazirot.pokedex.ui.navigation.routing.AppRoutes
 import com.lanazirot.pokedex.ui.providers.GlobalProvider
@@ -28,14 +27,8 @@ fun NavigationCenterButton() {
         backgroundColor = Color.Transparent,
         onClick = {
             if(!currentUser.isPokedexCompleted()) {
-                navController.navigate(AppRoutes.Play.Game) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }else{
+                navController.navigate(AppRoutes.Play.Game)
+            } else {
                 Toast.makeText(context, "You have already completed the pokedex!", Toast.LENGTH_SHORT).show()
             }
         }

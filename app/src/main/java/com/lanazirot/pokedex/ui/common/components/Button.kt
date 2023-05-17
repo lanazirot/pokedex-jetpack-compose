@@ -20,18 +20,25 @@ import com.lanazirot.pokedex.ui.theme.Pokemon
 fun BlackButtonWithPokeball(
     text: String,
     route: String,
-    popUpTo: String
+    popUpTo: String,
+    ownClick: Boolean = false,
+    color: Color = Color.Black,
+    onClick: () -> Unit = {},
+    enabled: Boolean = true
 ){
-
     val navController = GlobalProvider.current.navigation
     Spacer(modifier = Modifier.height(15.dp))
     Column {
         OutlinedButton(
             onClick = {
-                navController.navigate(route){
-                    popUpTo(popUpTo){
-                        inclusive = true
-                        saveState = false
+                if (ownClick) {
+                    onClick()
+                } else {
+                    navController.navigate(route){
+                        popUpTo(popUpTo){
+                            inclusive = true
+                            saveState = false
+                        }
                     }
                 }
             },
@@ -40,7 +47,7 @@ fun BlackButtonWithPokeball(
                 .padding(horizontal = 50.dp),
             shape = RoundedCornerShape(20),
             colors = ButtonDefaults.outlinedButtonColors(
-                backgroundColor = Color.Black
+                backgroundColor = color
             )
         ) {
             Text(
@@ -57,4 +64,21 @@ fun BlackButtonWithPokeball(
             )
         }
     }
+}
+
+@Composable
+fun BlackButtonWithPokeball(
+    text: String,
+    route: String,
+    popUpTo: String,
+    color: Color = Color.Black,
+) {
+    BlackButtonWithPokeball(
+        text = text,
+        route = route,
+        popUpTo = popUpTo,
+        ownClick = false,
+        color = color,
+        enabled = true
+    )
 }

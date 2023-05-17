@@ -80,11 +80,18 @@ class UserManager @Inject constructor(
         currentUser?.currentUserData?.foundPokemonList?.add(pokemon)
         if (currentUser?.currentUserData?.foundPokemonList?.size == totalPokemon) {
             currentUser?.currentUserData?.pokedexCompleted = true
-            //If user has completed the pokedex, add to the leaderboard collection
-            val leaderboard = Leaderboard.fromUser(currentUser!!)
-            firebaseFirestore.collection("leaderboard").add(leaderboard)
         }
         firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!)
+    }
+
+    override fun setCountry(country: String) {
+        currentUser?.country = country
+        firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!)
+    }
+
+    override suspend fun addToLeaderboard() {
+        val leaderboard = Leaderboard.fromUser(currentUser!!)
+        firebaseFirestore.collection("leaderboard").add(leaderboard)
     }
 
     override suspend fun addToScoreLog(score: Int, elapsedTime: Long) {
@@ -97,6 +104,8 @@ class UserManager @Inject constructor(
     override suspend fun addToPlayedTime(elapsedTime: Long){
         currentUser?.currentUserData?.playedTime = currentUser?.currentUserData?.playedTime?.plus(elapsedTime)!!
         firebaseFirestore.collection("users").document(currentUser?.email!!).set(currentUser!!).await()
+
+
     }
 
     override suspend fun removeFromPlayedTime(elapsedTime: Long) {
